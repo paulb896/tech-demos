@@ -6,6 +6,22 @@ GitHub Pages note
 
 This project sets Vite `base: './'` so asset URLs work when the site is served from a repository sub-path on GitHub Pages.
 
+Branch deploy (no Actions)
+
+If you prefer GitHub Pages “Deploy from a branch”, this project can build into `docs/` and commit the output.
+
+- In GitHub: Settings → Pages → **Build and deployment**
+- Source: **Deploy from a branch**
+- Branch: `main` (or your branch) and folder: `/docs`
+
+Then run:
+
+```bash
+npm run build
+```
+
+Commit the generated `docs/` folder and push.
+
 Node version
 
 This repo expects Node `24.12.0` via `nvm`.
