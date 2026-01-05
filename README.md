@@ -2,6 +2,10 @@
 
 Minimal Vite + React starter configured to deploy to GitHub Pages via GitHub Actions.
 
+GitHub Pages note
+
+This project sets Vite `base: './'` so asset URLs work when the site is served from a repository sub-path on GitHub Pages.
+
 Node version
 
 This repo expects Node `24.12.0` via `nvm`.
