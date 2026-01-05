@@ -30,11 +30,20 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: 'project-two',
-    name: 'Project Two',
-    description: 'Another one-liner describing impact, performance, or architecture.',
-    githubUrl: 'https://github.com/<you>/<repo>',
-    tags: ['Go', 'Postgres']
+    slug: 'llm-doc-embeddings',
+    name: 'LLM Text Document Embeddings',
+    description: 'Parse and load text files into a Postgres vector DB for use in a RAG setup.',
+    githubUrl: 'https://github.com/paulb896/llm-doc-embeddings',
+    tags: ['RAG', 'Embeddings', 'Postgres', 'TypeScript'],
+    liveUrl: 'https://paulb896.github.io/llm-doc-embeddings/',
+    screenshotUrl: `${import.meta.env.BASE_URL}project-screenshots/llm-doc-embeddings.jpeg`,
+    techUsed: ['TypeScript', 'Postgres', 'Docker', 'Docker Compose', 'Ollama', 'AWS Bedrock'],
+    highlights: [
+      'Indexes a single document or a directory into a Postgres vector DB.',
+      'Searches indexed documents and can generate AI-assisted answers from results.',
+      'Includes a web server and Swagger docs for exploring the API.',
+      'Supports both CLI workflows and file uploads.'
+    ],
   },
   {
     slug: 'project-three',

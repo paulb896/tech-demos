@@ -114,22 +114,38 @@ const sanitizeUrl = (url) => {
   return next
 }
 
-const stripHtml = (text) => {
+const collapseWhitespace = (text) => {
   if (!text) return text
   return String(text)
+    .replace(/[\t\r\n]+/g, ' ')
+    .replace(/\s{2,}/g, ' ')
+    .trim()
+}
+
+const stripHtml = (text) => {
+  if (!text) return text
+  return collapseWhitespace(String(text)
     .replace(/<[^>]+>/g, '')
     .replace(/&nbsp;/g, ' ')
     .replace(/&amp;/g, '&')
-    .trim()
+    .trim())
 }
 
 const stripMarkdownLinks = (text) => {
   if (!text) return text
   // [label](url) -> label
-  return String(text)
+  return collapseWhitespace(String(text)
     .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$1')
     .replace(/`+/g, '')
-    .trim()
+    .trim())
+}
+
+const stripCodeBlocks = (text) => {
+  if (!text) return text
+  // Remove fenced code blocks completely.
+  return String(text)
+    .replace(/```[\s\S]*?```/g, '')
+    .replace(/~~~[\s\S]*?~~~/g, '')
 }
 
 const extractReadmeSection = (readme, headings) => {
@@ -166,7 +182,7 @@ const extractReadmeSection = (readme, headings) => {
 
 const bulletize = (sectionText, maxItems = 8) => {
   if (!sectionText) return []
-  const lines = sectionText
+  const lines = stripCodeBlocks(sectionText)
     .split(/\r?\n/)
     .map((l) => l.trim())
     .filter(Boolean)
@@ -179,8 +195,21 @@ const bulletize = (sectionText, maxItems = 8) => {
 
   if (bullets.length) return bullets.slice(0, maxItems)
 
+  // If the section is written as headings (common for "Usage"), treat them as bullets.
+  const headingBullets = []
+  for (const line of lines) {
+    const m = line.match(/^#{2,6}\s+(.*)$/)
+    if (!m || !m[1]) continue
+    const cleaned = stripMarkdownLinks(stripHtml(m[1].trim()))
+    if (!cleaned) continue
+    headingBullets.push(cleaned)
+    if (headingBullets.length >= maxItems) break
+  }
+
+  if (headingBullets.length) return headingBullets
+
   // fallback: split paragraphs into sentences
-  const joined = lines.join(' ')
+  const joined = lines.map((l) => stripMarkdownLinks(stripHtml(l))).join(' ')
   const sentences = joined
     .split(/(?<=[.!?])\s+/)
     .map((s) => s.trim())
@@ -222,11 +251,13 @@ console.log(`Cloning to ${repoDir} ...`)
 runGit(['clone', '--depth', '1', ...(branch ? ['--branch', branch] : []), repoUrl, repoDir])
 
 const packageJsonPath = path.join(repoDir, 'package.json')
+const packageLockPath = path.join(repoDir, 'package-lock.json')
 const readmeCandidates = ['README.md', 'Readme.md', 'readme.md'].map((n) => path.join(repoDir, n))
 const readmePath = readmeCandidates.find((p) => exists(p)) || null
 const readmeText = readmePath ? readTextIfExists(readmePath) : null
 
 const deps = exists(packageJsonPath) ? parsePackageJsonDeps(readTextIfExists(packageJsonPath) || '') : []
+const packageLockText = exists(packageLockPath) ? readTextIfExists(packageLockPath, 400_000) : null
 
 const files = listFiles(repoDir)
 const extCounts = new Map()
@@ -261,6 +292,13 @@ const highlightsSection =
 const highlights = bulletize(highlightsSection)
 const fallbackHighlights = highlights.length ? [] : extractFirstBulletBlock(readmeText)
 
+const lowerReadme = (readmeText || '').toLowerCase()
+const lowerLock = (packageLockText || '').toLowerCase()
+const hasFileNamed = (name) => {
+  const target = String(name).toLowerCase()
+  return files.some((f) => path.basename(f).toLowerCase() === target)
+}
+
 const techUsed = []
 if (deps.includes('react')) techUsed.push('React')
 if (deps.includes('next')) techUsed.push('Next.js')
@@ -269,6 +307,37 @@ if (deps.includes('@react-three/fiber')) techUsed.push('react-three-fiber')
 if (deps.includes('three')) techUsed.push('three.js')
 if (deps.includes('express')) techUsed.push('Express')
 if (deps.includes('typescript')) techUsed.push('TypeScript')
+
+// Infra/runtime signals
+if (hasFileNamed('dockerfile') || hasFileNamed('.dockerfile') || files.some((f) => path.basename(f).toLowerCase().startsWith('dockerfile.'))) {
+  techUsed.push('Docker')
+}
+
+if (
+  files.some((f) => path.basename(f).toLowerCase().startsWith('docker-compose')) ||
+  lowerReadme.includes('docker compose') ||
+  lowerReadme.includes('docker-compose')
+) {
+  techUsed.push('Docker Compose')
+}
+
+if (deps.includes('pg') || lowerReadme.includes('postgres') || lowerReadme.includes('postgresql')) {
+  techUsed.push('Postgres')
+}
+
+if (lowerReadme.includes('ollama')) {
+  techUsed.push('Ollama')
+}
+
+if (
+  lowerReadme.includes('bedrock') ||
+  deps.some((d) => d.startsWith('@aws-sdk/client-bedrock')) ||
+  deps.includes('@aws-sdk/credential-providers') ||
+  lowerLock.includes('@langchain/aws') ||
+  lowerLock.includes('client-bedrock')
+) {
+  techUsed.push('AWS Bedrock')
+}
 
 for (const d of deps.slice(0, 25)) {
   if (techUsed.length >= 16) break
@@ -289,7 +358,21 @@ const description = (() => {
     if (line.startsWith('![') || line.startsWith('[![')) continue
     if (line.includes('shields.io')) continue
     if (line.startsWith('<') || line.toLowerCase().includes('<img')) continue
-    const cleaned = stripMarkdownLinks(stripHtml(line))
+    const parts = [line]
+
+    // Join a few wrapped lines that look like a continuation of the sentence.
+    for (let j = i + 1; j < Math.min(lines.length, i + 6); j += 1) {
+      const next = lines[j].trim()
+      if (!next) break
+      if (next.startsWith('#')) break
+      if (next.startsWith('- ') || next.startsWith('* ') || next.startsWith('+ ')) break
+      if (next.startsWith('![') || next.startsWith('[![')) break
+      if (/^```/.test(next) || /^~~~/.test(next)) break
+      parts.push(next)
+      if (/[.!?]$/.test(next)) break
+    }
+
+    const cleaned = stripMarkdownLinks(stripHtml(parts.join(' ')))
     if (!cleaned) continue
     if (cleaned.length < 6) continue
     return cleaned

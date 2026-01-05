@@ -566,6 +566,29 @@
             "src/pages/AgentPromptsPage.tsx",
             "src/index.css"
           ]
+        },
+        {
+          "id": "p080",
+          "at": "2026-01-05T22:47:01.631Z",
+          "prompt": "Add a new project (2) for https://github.com/paulb896/llm-doc-embeddings",
+          "verbatim": true,
+          "summary": "Added llm-doc-embeddings as project #2, enhanced repo scanner to produce cleaner highlights/description from hard-wrapped READMEs, and copied the repo screenshot into public assets.",
+          "files": [
+            "src/data/projects.ts",
+            ".github/skills/project-documentation/scan-project-repo.cjs",
+            "public/project-screenshots/llm-doc-embeddings.jpeg"
+          ]
+        },
+        {
+          "id": "p081",
+          "at": "2026-01-05T22:50:52.825Z",
+          "prompt": "That last project used AI (AWS Bedrock and Ollama), Docker and Docker Compose, as well asl Postgres, ensure those are added and that they would be added when a new project description is being generated",
+          "verbatim": true,
+          "summary": "Expanded project repo scanner to detect AWS Bedrock, Ollama, Docker, Docker Compose, and Postgres (including via lockfile signals), and updated llm-doc-embeddings techUsed accordingly.",
+          "files": [
+            "src/data/projects.ts",
+            ".github/skills/project-documentation/scan-project-repo.cjs"
+          ]
         }
       ],
       "highLevelSummary": {
