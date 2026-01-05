@@ -3,7 +3,12 @@ export type Project = {
   name: string
   description: string
   githubUrl?: string
+  liveUrl?: string
+  screenshotUrl?: string
   tags?: string[]
+  techUsed?: string[]
+  whatILearned?: string[]
+  highlights?: string[]
 }
 
 export const projects: Project[] = [
@@ -13,7 +18,16 @@ export const projects: Project[] = [
     description:
       'Chrome extension that injects/overrides HTTP request headers and query params for XHR/Fetch requests using declarativeNetRequest dynamic rules.',
     githubUrl: 'https://github.com/paulb896/request-header-override-chrome-extension',
-    tags: ['Chrome Extension', 'React', 'DevTools', 'declarativeNetRequest']
+    liveUrl: 'https://chrome.google.com/webstore/detail/request-header-override-m/cfgjehpalgepkcfekgjgmklehchiidgi?hl=en',
+    screenshotUrl: `${import.meta.env.BASE_URL}project-screenshots/request-header-override.png`,
+    tags: ['Chrome Extension', 'React', 'DevTools', 'declarativeNetRequest'],
+    techUsed: ['React', 'TypeScript', 'eslint'],
+    highlights: [
+      'Allows a user to override headers for outgoing requests (for example, setting trace-enabled: true or X-Akamai-Edgescape headers for debugging).',
+      'Overrides can be limited to domains based on a regex pattern to avoid setting headers on requests that could cause issues.',
+      'Uses Chrome Extension Manifest V3 to be more secure and remain compatible as V2 is deprecated.',
+      'Overrides are stored in browser local storage so they persist across sessions.'
+    ],
   },
   {
     slug: 'project-two',

@@ -1,9 +1,9 @@
 import React from 'react'
-import LinkedInWidget from '../LinkedInWidget'
-import { linkedInProfile } from '../profile'
-import type { SkillIconKind } from '../SkillIcon'
-import { projects } from '../projects'
-import { HeroScene, skillLabelByKind } from './CubeHeroScene'
+import LinkedInWidget from '../components/LinkedInWidget'
+import { linkedInProfile } from '../data/profile'
+import type { SkillIconKind } from '../components/SkillIcon'
+import { projects } from '../data/projects'
+import { HeroScene, skillLabelByKind } from '../components/CubeHeroScene'
 
 export const HomePage = (): JSX.Element => {
   const [selectedSkill, setSelectedSkill] = React.useState<SkillIconKind | null>(null)
@@ -15,11 +15,14 @@ export const HomePage = (): JSX.Element => {
     <div className="page">
       <header className="hero">
         <div className="heroText">
-          <h1 className="title">Backend developer</h1>
+          <h1 className="title">Backend Software Architect</h1>
           <p className="subtitle">Nearly 20 years of professional experience building reliable web systems.</p>
           <div className="ctaRow">
             <a className="button secondary" href="https://github.com/paulb896" target="_blank" rel="noreferrer">
               GitHub
+            </a>
+            <a className="button secondary" href="#/agent-prompts">
+              Agent Prompts
             </a>
           </div>
 

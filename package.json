@@ -10,6 +10,7 @@
     "build": "vite build && node scripts/postbuild.cjs",
     "preview": "vite preview",
     "lint": "eslint --ext .ts,.tsx src",
+    "log:prompt": "node scripts/append-agent-prompt.cjs",
     "lint:fix": "eslint --ext .ts,.tsx src --fix"
   },
   "dependencies": {

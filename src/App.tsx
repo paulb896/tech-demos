@@ -1,7 +1,8 @@
 import React from 'react'
 import { HashRouter, Route, Routes } from 'react-router-dom'
-import ProjectPage from './ProjectPage'
-import { HomePage } from './components'
+import ProjectPage from './pages/ProjectPage'
+import { HomePage } from './pages/HomePage'
+import AgentPromptsPage from './pages/AgentPromptsPage'
 
 const App = (): JSX.Element => {
   return (
@@ -9,6 +10,7 @@ const App = (): JSX.Element => {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/projects/:slug" element={<ProjectPage />} />
+        <Route path="/agent-prompts" element={<AgentPromptsPage />} />
       </Routes>
     </HashRouter>
   )

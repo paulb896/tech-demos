@@ -3,8 +3,8 @@ import { Canvas, useFrame } from '@react-three/fiber'
 import type { RootState } from '@react-three/fiber'
 import * as THREE from 'three'
 import { Edges, Environment, Html, OrbitControls, RoundedBox, Text, useCursor } from '@react-three/drei'
-import type { SkillIconKind } from '../SkillIcon'
-import SkillMark3D from '../SkillMark3D'
+import type { SkillIconKind } from './SkillIcon'
+import SkillMark3D from './SkillMark3D'
 
 type Face = {
   position: [number, number, number]
