@@ -589,6 +589,26 @@
             "src/data/projects.ts",
             ".github/skills/project-documentation/scan-project-repo.cjs"
           ]
+        },
+        {
+          "id": "p082",
+          "at": "2026-01-05T23:05:44.618Z",
+          "prompt": "my gh-pages build is failing\\n1s\\nCurrent runner version: '2.330.0'\\nRunner Image Provisioner\\nOperating System\\nRunner Image\\nGITHUB_TOKEN Permissions\\nSecret source: Actions\\nPrepare workflow directory\\nPrepare all required actions\\nGetting action download info\\nDownload action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)\\nDownload action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)\\nDownload action repository 'actions/upload-pages-artifact@v1' (SHA:84bb4cd4b733d5c320c9c9cfbc354937524f4d64)\\nGetting action download info\\nError: This request has been automatically failed because it uses a deprecated version of . Learn more: https://github.blog/changelog/2024-04-16-deprecation-notice-v3-of-the-artifact-actions/",
+          "verbatim": true,
+          "summary": "Updated GitHub Pages workflow to use actions/upload-pages-artifact@v3 and actions/deploy-pages@v4 (avoids deprecated upload-artifact v3) and fixed the uploaded path to ./docs.",
+          "files": [
+            ".github/workflows/deploy.yml"
+          ]
+        },
+        {
+          "id": "p083",
+          "at": "2026-01-05T23:06:15.800Z",
+          "prompt": "my gh-pages build is failing\n1s\nCurrent runner version: '2.330.0'\nRunner Image Provisioner\nOperating System\nRunner Image\nGITHUB_TOKEN Permissions\nSecret source: Actions\nPrepare workflow directory\nPrepare all required actions\nGetting action download info\nDownload action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)\nDownload action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)\nDownload action repository 'actions/upload-pages-artifact@v1' (SHA:84bb4cd4b733d5c320c9c9cfbc354937524f4d64)\nGetting action download info\nError: This request has been automatically failed because it uses a deprecated version of actions/upload-artifact: v3. Learn more: https://github.blog/changelog/2024-04-16-deprecation-notice-v3-of-the-artifact-actions/\n",
+          "verbatim": true,
+          "summary": "Re-logged the GH Pages failure prompt without shell backtick expansion so the prompt text is captured verbatim.",
+          "files": [
+            "src/data/agent-prompts.json"
+          ]
         }
       ],
       "highLevelSummary": {
