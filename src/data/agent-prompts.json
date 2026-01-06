@@ -890,6 +890,306 @@
             "src/components/CubeHeroScene.tsx",
             "src/components/SkillMark3D.tsx"
           ]
+        },
+        {
+          "id": "p110",
+          "at": "2026-01-06T03:16:36.145Z",
+          "prompt": "Looks great, but the glass slider no longer works",
+          "verbatim": true,
+          "summary": "Fixed the glass slider range so it can reach 0% (opaque) again by setting min=0, restoring expected behavior.",
+          "files": [
+            "src/components/CubeHeroScene.tsx"
+          ]
+        },
+        {
+          "id": "p111",
+          "at": "2026-01-06T03:22:07.461Z",
+          "prompt": "The slider no longer changes the transparency of the cube",
+          "verbatim": true,
+          "summary": "Restored visible cube transparency changes by mapping transmission to material opacity (while retaining MeshPhysicalMaterial transmission for the glass look).",
+          "files": [
+            "src/components/CubeHeroScene.tsx"
+          ]
+        },
+        {
+          "id": "p112",
+          "at": "2026-01-06T04:23:29.672Z",
+          "prompt": "Remove the glass slider completely",
+          "verbatim": true,
+          "summary": "Removed the glass slider UI and related state/props; the cube now uses a fixed transmission value.",
+          "files": [
+            "src/components/CubeHeroScene.tsx",
+            "src/pages/HomePage.tsx",
+            "src/pages/ProjectPage.tsx",
+            "src/pages/AgentPromptsPage.tsx"
+          ]
+        },
+        {
+          "id": "p113",
+          "at": "2026-01-06T04:24:42.508Z",
+          "prompt": "I want fully opaque",
+          "verbatim": true,
+          "summary": "Set the cube to be permanently opaque by fixing transmission to 0 and using an opaque material (no transparency/opacity mapping).",
+          "files": [
+            "src/components/CubeHeroScene.tsx"
+          ]
+        },
+        {
+          "id": "p114",
+          "at": "2026-01-06T04:47:45.939Z",
+          "prompt": "If I click and hold the icon it should stay indented",
+          "verbatim": true,
+          "summary": "Changed cube face icon press animation to be hold-to-indent by damping toward a pressed target and releasing on global pointerup/cancel.",
+          "files": [
+            "src/components/CubeHeroScene.tsx"
+          ]
+        },
+        {
+          "id": "p115",
+          "at": "2026-01-06T04:53:11.249Z",
+          "prompt": "Can you ensure that the text below the icon is always at the bottom of the cube based on the current camera view and viewport so that it's always easy to read",
+          "verbatim": true,
+          "summary": "Replaced rotating 3D face labels with a fixed screen-space label pinned to the bottom of the cube viewport for consistent readability.",
+          "files": [
+            "src/components/CubeHeroScene.tsx",
+            "src/index.css"
+          ]
+        },
+        {
+          "id": "p116",
+          "at": "2026-01-06T04:56:45.003Z",
+          "prompt": "That's not right, I still want the text to be rendered on the cube, but just the side of the cube that's closest to the ground (bottom of the viewport)",
+          "verbatim": true,
+          "summary": "Switched cube label back to 3D Text and render it only on the bottom-most visible face in the current camera view; removed prior screen-space Html label.",
+          "files": [
+            "src/components/CubeHeroScene.tsx",
+            "src/index.css"
+          ]
+        },
+        {
+          "id": "p117",
+          "at": "2026-01-06T04:58:53.800Z",
+          "prompt": "It's still sometimes showing on top",
+          "verbatim": true,
+          "summary": "Adjusted cube label placement logic to choose the bottom-most face in screen-space using the projected label anchor point, reducing cases where the label appears on the top.",
+          "files": [
+            "src/components/CubeHeroScene.tsx"
+          ]
+        },
+        {
+          "id": "p118",
+          "at": "2026-01-06T05:00:22.429Z",
+          "prompt": "It should show the face that's currently in view (current behavior, but the label should always be as low as possible)",
+          "verbatim": true,
+          "summary": "Fixed bottom-face label selection to project the label's true world position (including the icon group's z-offset) so the chosen visible face is consistently the lowest in the viewport.",
+          "files": [
+            "src/components/CubeHeroScene.tsx"
+          ]
+        },
+        {
+          "id": "p119",
+          "at": "2026-01-06T05:02:14.401Z",
+          "prompt": "It's still showing on top sometimes, but it's mostly good now",
+          "verbatim": true,
+          "summary": "Made bottom-face label selection more stable by projecting the label via markGroup (includes press offsets), ignoring offscreen/behind-camera candidates, relaxing label-facing threshold to >0, and adding small hysteresis to prevent occasional flips to a higher face.",
+          "files": [
+            "src/components/CubeHeroScene.tsx"
+          ]
+        },
+        {
+          "id": "p120",
+          "at": "2026-01-06T05:04:40.436Z",
+          "prompt": "Looks great, can you make the cube look even more impressive",
+          "verbatim": true,
+          "summary": "Enhanced cube visuals with shadows + subtle float motion and improved physical material highlights (clearcoat/emissive/env intensity), plus a stronger shadow-casting key light.",
+          "files": [
+            "src/components/CubeHeroScene.tsx"
+          ]
+        },
+        {
+          "id": "p121",
+          "at": "2026-01-06T05:05:59.725Z",
+          "prompt": "Sure, I want it to look super impressive",
+          "verbatim": true,
+          "summary": "Upgraded cube visuals with studio-style Environment Lightformers, extra rim/key lights, and richer physical material tuning (more premium highlights + shadow presence) without changing UX.",
+          "files": [
+            "src/components/CubeHeroScene.tsx"
+          ]
+        },
+        {
+          "id": "p122",
+          "at": "2026-01-06T05:06:59.612Z",
+          "prompt": "Anything else like cube maps or radiosity tracing that can make it look even better?",
+          "verbatim": true,
+          "summary": "Logged discussion of further rendering upgrades (HDRI cubemaps, dynamic envmaps, GI/path tracing approximations) and offered next-step options.",
+          "files": [
+            "src/data/agent-prompts.json"
+          ]
+        },
+        {
+          "id": "p123",
+          "at": "2026-01-06T05:08:18.866Z",
+          "prompt": "Super impressive without perf risk and any deps needed",
+          "verbatim": true,
+          "summary": "Upgraded cube grounding with drei AccumulativeShadows + RandomizedLight for high-end soft shadows (no new dependencies), keeping the existing studio Environment/lighting.",
+          "files": [
+            "src/components/CubeHeroScene.tsx"
+          ]
+        },
+        {
+          "id": "p124",
+          "at": "2026-01-06T05:10:21.729Z",
+          "prompt": "That bottom floor looks bad, more glossy",
+          "verbatim": true,
+          "summary": "Added a subtle reflective ground plane (MeshReflectorMaterial) and softened/lifted AccumulativeShadows so the base looks cleaner and glossier.",
+          "files": [
+            "src/components/CubeHeroScene.tsx"
+          ]
+        },
+        {
+          "id": "p125",
+          "at": "2026-01-06T05:12:56.701Z",
+          "prompt": "Sometimes the floor looks really bad, and feel free to add more dependencies to make it look photo realistic or even better looking",
+          "verbatim": true,
+          "summary": "Installed @react-three/postprocessing (fiber v8 compatible) and switched the hero to a postprocessing-based photoreal pass (SSAO + subtle bloom + vignette + filmic tonemapping) while replacing the artifact-prone reflective floor with stable contact shadows.",
+          "files": [
+            "src/components/CubeHeroScene.tsx",
+            "package.json",
+            "package-lock.json"
+          ]
+        },
+        {
+          "id": "p126",
+          "at": "2026-01-06T05:18:06.776Z",
+          "prompt": "Find a small (1k) CC0-licensed HDRI from Poly Haven with a direct .hdr download URL. Return: (1) asset name, (2) direct URL to the 1k .hdr file, (3) expected file size if available, (4) any required attribution/license notes (should be CC0).",
+          "verbatim": true,
+          "summary": "Identified Poly Haven HDRI 'Plains Sunset' and extracted the direct 1k .hdr download URL and file size; confirmed CC0 license notes.",
+          "files": [
+            "src/data/agent-prompts.json"
+          ]
+        },
+        {
+          "id": "p127",
+          "at": "2026-01-06T05:18:40.999Z",
+          "prompt": "Sure, go for it",
+          "verbatim": true,
+          "summary": "Added a real CC0 HDRI environment (Poly Haven plains_sunset_1k.hdr) and wired it into the cube hero via drei Environment(files=...) using Vite BASE_URL, improving reflections/lighting realism.",
+          "files": [
+            "public/hdri/plains_sunset_1k.hdr",
+            "src/components/CubeHeroScene.tsx"
+          ]
+        },
+        {
+          "id": "p128",
+          "at": "2026-01-06T05:20:26.974Z",
+          "prompt": "Remove the hdri stuff as it looks pretty much the same",
+          "verbatim": true,
+          "summary": "Removed the external HDRI environment file and switched back to the built-in studio Lightformer Environment setup.",
+          "files": [
+            "src/components/CubeHeroScene.tsx",
+            "public/hdri/plains_sunset_1k.hdr"
+          ]
+        },
+        {
+          "id": "p129",
+          "at": "2026-01-06T05:22:12.996Z",
+          "prompt": "Sure, tune the cube to look better",
+          "verbatim": true,
+          "summary": "Tuned cube hero for a glossier, cleaner premium look by adjusting studio Lightformer intensities, filmic exposure, SSAO/Bloom/Vignette settings, contact shadow softness, and cube material reflectivity.",
+          "files": [
+            "src/components/CubeHeroScene.tsx"
+          ]
+        },
+        {
+          "id": "p130",
+          "at": "2026-01-06T05:24:39.053Z",
+          "prompt": "Looks good, now make it so clicking and dragging the cube scene will rotate the cube instead of rotating the scene and keep the floor on the ground and the camera fixed",
+          "verbatim": true,
+          "summary": "Replaced OrbitControls (camera rotation) with object-based drag rotation via drei PresentationControls; disabled cube auto-rotation so dragging rotates the cube while camera/ground remain fixed.",
+          "files": [
+            "src/components/CubeHeroScene.tsx"
+          ]
+        },
+        {
+          "id": "p131",
+          "at": "2026-01-06T05:27:26.389Z",
+          "prompt": "The rotating of the cube doesn't match the direction I'm clicking and dragging",
+          "verbatim": true,
+          "summary": "Replaced PresentationControls with a custom grab-and-drag object rotator so cube rotation matches pointer direction; moved skill click/hover handlers to the icon group so dragging on the cube rotates instead of selecting.",
+          "files": [
+            "src/components/CubeHeroScene.tsx"
+          ]
+        },
+        {
+          "id": "p132",
+          "at": "2026-01-06T05:28:18.715Z",
+          "prompt": "That's good, but I still want inertia",
+          "verbatim": true,
+          "summary": "Added inertial cube rotation: track angular velocity during drag and apply damped rotation after release, keeping camera and ground fixed.",
+          "files": [
+            "src/components/CubeHeroScene.tsx"
+          ]
+        },
+        {
+          "id": "p133",
+          "at": "2026-01-06T05:33:18.410Z",
+          "prompt": "chunk-3T5NPZBX.js?v=59919316:18167 The above error occurred in the <HeroScene> component:\n\n    at HeroScene (http://localhost:5173/src/components/CubeHeroScene.tsx:320:29)\n    at div\n    at div\n    at header\n    at div\n    at HomePage (http://localhost:5173/src/pages/HomePage.tsx:25:51)\n    at RenderedRoute (http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=59919316:6284:26)\n    at Routes (http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=59919316:7133:3)\n    at Router (http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=59919316:7074:13)\n    at HashRouter (http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=59919316:10229:3)\n    at App\n\nConsider adding an error boundary to your tree to customize error handling behavior.",
+          "verbatim": true,
+          "summary": "Fixed HeroScene runtime crash caused by calling useFrame outside the Canvas context by moving drag/inertia logic into a Canvas child component (DragRotateGroup) and removing a duplicate/incorrect HeroScene export that appeared during refactor.",
+          "files": [
+            "src/components/CubeHeroScene.tsx"
+          ]
+        },
+        {
+          "id": "p134",
+          "at": "2026-01-06T05:34:21.465Z",
+          "prompt": "Reduce the friction a bit more, I want it to keep spinning for a couple of seconds at least",
+          "verbatim": true,
+          "summary": "Reduced inertia damping on the drag-rotated cube so it coasts longer after release.",
+          "files": [
+            "src/components/CubeHeroScene.tsx"
+          ]
+        },
+        {
+          "id": "p135",
+          "at": "2026-01-06T05:37:01.340Z",
+          "prompt": "Under the \"Selected Skill\" section add a new cool looking gauge component that shows how many years I've had experience with that skill and add a small description of what that skill entails",
+          "verbatim": true,
+          "summary": "Added a compact experience gauge + per-skill description under the Selected skill panel on the home page, driven by a skillDetailsByKind map (years editable).",
+          "files": [
+            "src/pages/HomePage.tsx",
+            "src/index.css"
+          ]
+        },
+        {
+          "id": "p136",
+          "at": "2026-01-06T05:39:31.052Z",
+          "prompt": "Looks great, fix this one last bug\\nPlease enable the NormalPass in the EffectComposer in order to use SSAO.",
+          "verbatim": true,
+          "summary": "Enabled EffectComposer NormalPass (enableNormalPass) so SSAO has a normal buffer and stops warning/crashing.",
+          "files": [
+            "src/components/CubeHeroScene.tsx"
+          ]
+        },
+        {
+          "id": "p137",
+          "at": "2026-01-06T05:42:28.747Z",
+          "prompt": "Make the cube skill icon click area larger",
+          "verbatim": true,
+          "summary": "Increased cube skill icon click target by adding an invisible hit plane behind each skill mark.",
+          "files": [
+            "src/components/CubeHeroScene.tsx"
+          ]
+        },
+        {
+          "id": "p138",
+          "at": "2026-01-06T05:43:51.980Z",
+          "prompt": "Any click and drag in the canvas should rotate the cube, it doesn't need to be on the cube itself",
+          "verbatim": true,
+          "summary": "Added a large invisible background hit plane and refactored DragRotateGroup so drags anywhere in the canvas rotate the cube (icon clicks still stop propagation).",
+          "files": [
+            "src/components/CubeHeroScene.tsx"
+          ]
         }
       ],
       "highLevelSummary": {

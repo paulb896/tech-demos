@@ -9,7 +9,6 @@ const ProjectPage = (): JSX.Element => {
   const project = allProjects.find((p) => p.slug === slug)
 
   const [selectedSkill, setSelectedSkill] = React.useState<SkillIconKind | null>(null)
-  const [glassTransmission, setGlassTransmission] = React.useState<number>(0.92)
 
   if (!project) {
     return (
@@ -49,12 +48,7 @@ const ProjectPage = (): JSX.Element => {
         ) : null}
 
         <div className="pageCube" aria-label="3D rotating cube demo">
-          <HeroScene
-            selectedSkill={selectedSkill}
-            onSelectSkill={setSelectedSkill}
-            transmission={glassTransmission}
-            onChangeTransmission={setGlassTransmission}
-          />
+          <HeroScene selectedSkill={selectedSkill} onSelectSkill={setSelectedSkill} />
         </div>
       </header>
 

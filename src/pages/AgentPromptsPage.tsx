@@ -85,7 +85,6 @@ const AgentPromptsPage = (): JSX.Element => {
   const session = log.sessions?.[log.sessions.length - 1]
 
   const [selectedSkill, setSelectedSkill] = React.useState<SkillIconKind | null>(null)
-  const [glassTransmission, setGlassTransmission] = React.useState<number>(0.92)
 
   const entries: PromptEntry[] = React.useMemo(() => {
     const fromEntries = session?.userPromptEntries ?? []
@@ -145,12 +144,7 @@ const AgentPromptsPage = (): JSX.Element => {
       </header>
 
       <div className="pageCube" aria-label="3D rotating cube demo">
-        <HeroScene
-          selectedSkill={selectedSkill}
-          onSelectSkill={setSelectedSkill}
-          transmission={glassTransmission}
-          onChangeTransmission={setGlassTransmission}
-        />
+        <HeroScene selectedSkill={selectedSkill} onSelectSkill={setSelectedSkill} />
       </div>
 
       <section className="promptToolbar" aria-label="Prompt search">
