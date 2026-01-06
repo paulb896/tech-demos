@@ -46,31 +46,78 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: 'project-three',
-    name: 'Project Three',
-    description: 'A service, tool, or library that highlights your strengths.',
-    githubUrl: 'https://github.com/<you>/<repo>',
-    tags: ['API', 'Observability']
-  },
-  {
-    slug: 'project-four',
-    name: 'Project Four',
-    description: 'Something fun: a demo, game, or interesting tech exploration.',
-    githubUrl: 'https://github.com/<you>/<repo>',
-    tags: ['3D', 'Frontend']
-  },
-  {
-    slug: 'project-five',
-    name: 'Project Five',
-    description: 'A “boring” but valuable project: automation, tooling, migrations.',
-    githubUrl: 'https://github.com/<you>/<repo>',
-    tags: ['DevEx', 'CI']
-  },
-  {
-    slug: 'project-six',
-    name: 'Project Six',
-    description: 'A project with performance wins, scale, or reliability focus.',
-    githubUrl: 'https://github.com/<you>/<repo>',
-    tags: ['Performance', 'SRE']
+    slug: 'llm-typescript-codebase-embeddings',
+    name: 'LLM TypeScript Codebase Embeddings',
+    description: 'Parse and load a TypeScript codebase into a Postgres vector DB for use in a RAG setup.',
+    githubUrl: 'https://github.com/paulb896/llm-typescript-codebase-embeddings',
+    tags: ['RAG', 'Embeddings', 'Postgres', 'TypeScript'],
+    liveUrl: 'https://paulb896.github.io/llm-typescript-codebase-embeddings/',
+    screenshotUrl: `${import.meta.env.BASE_URL}project-screenshots/llm-typescript-codebase-embeddings.jpeg`,
+    techUsed: [
+      'TypeScript',
+      'Docker',
+      'Docker Compose',
+      'Postgres',
+      'Ollama'
+    ],
+    highlights: [
+      'Indexes a TypeScript codebase into a Postgres vector DB.',
+      'Searches indexed code and can generate AI-assisted answers from results.',
+      'Includes a web server and Swagger docs for exploring the API.',
+      'Runs locally with Docker + Docker Compose and supports file uploads.'
+    ],
   }
 ]
+
+export const workProjects: Project[] = [
+  {
+    slug: 'ea-skate-webstore',
+    name: 'Skate Webstore (Electronic Arts)',
+    description:
+      'Public-facing web storefront for the Skate game: browse and purchase add-ons/currency, redeem codes, and manage loyalty rewards.',
+    liveUrl: 'https://store.ea.com/skate',
+    screenshotUrl: `${import.meta.env.BASE_URL}project-screenshots/ea-skate-webstore.png`,
+    tags: ['Work', 'E-commerce', 'Gaming'],
+    techUsed: ['Next.js', 'TypeScript', 'Mercurius GraphQL', 'Kubernetes'],
+    highlights: [
+      'Supports direct web purchases (currency packs, add-ons, and season passes) with a web bonus incentive.',
+      'Includes code redemption flows for in-game items and entitlements.',
+      'Implements a loyalty points program with reward redemption across seasons.',
+      'Production-grade operations: scalable backend APIs and infrastructure for high-traffic storefront workloads.'
+    ]
+  },
+  {
+    slug: 'ea-battlefield-webstore',
+    name: 'Battlefield Webstore (Electronic Arts)',
+    description:
+      'Public-facing web storefront for Battlefield: purchase in-game currency and bundles, and access season pass offerings.',
+    liveUrl: 'https://store.ea.com/battlefield/en',
+    screenshotUrl: `${import.meta.env.BASE_URL}project-screenshots/ea-battlefield-webstore.png`,
+    tags: ['Work', 'E-commerce', 'Gaming'],
+    techUsed: ['Next.js', 'TypeScript', 'Mercurius GraphQL', 'Kubernetes'],
+    highlights: [
+      'Supports direct web purchases of in-game currency (Battlefield Coins) and bundles.',
+      'Includes battle pass and season-related offerings surfaced in a dedicated storefront UI.',
+      'Integrates account-based flows (sign-in) and purchase/license terms for digital content.',
+      'Built to support a global audience with localization and links to support channels.'
+    ]
+  },
+  {
+    slug: 'ea-apex-webstore',
+    name: 'Apex Legends Webstore (Electronic Arts)',
+    description:
+      'Public-facing web storefront for Apex Legends: browse and purchase in-game currency and offers, and access season-related content.',
+    liveUrl: 'http://store.ea.com/apex-legends',
+    screenshotUrl: `${import.meta.env.BASE_URL}project-screenshots/ea-apex-webstore.png`,
+    tags: ['Work', 'E-commerce', 'Gaming'],
+    techUsed: ['Next.js', 'TypeScript', 'Mercurius GraphQL', 'Kubernetes'],
+    highlights: [
+      'Supports direct web purchases of in-game currency and time-boxed offers.',
+      'Includes account-based flows (sign-in) and purchase/license terms for digital content.',
+      'Designed for a global audience with localization and support links.',
+      'Built on the same storefront platform and backend stack as the Skate and Battlefield webstores.'
+    ]
+  }
+]
+
+export const allProjects: Project[] = [...projects, ...workProjects]

@@ -96,6 +96,27 @@ Options:
 - `--copy-screenshot`: if the repo contains an image named like “screenshot/demo/screen”, copy it into `public/project-screenshots/` and set `screenshotUrl`.
 - `--update-description`: overwrite the existing `description` using README-derived text (off by default).
 
+### Optional: capture a screenshot from a public website
+
+For work projects or repos without a screenshot asset, capture a screenshot directly from a public URL.
+
+```bash
+node .github/skills/project-documentation/capture-website-screenshot.cjs \
+  --url <https://public-site.example.com> \
+  --slug <slug>
+```
+
+To also capture a full-page screenshot (in addition to the viewport screenshot):
+
+```bash
+node .github/skills/project-documentation/capture-website-screenshot.cjs \
+  --url <https://public-site.example.com> \
+  --slug <slug> \
+  --also-full-page
+```
+
+This will save `public/project-screenshots/<slug>.png` and print a `screenshotUrl` value that works on GitHub Pages.
+
 5) Sanity check
 
 - Run:

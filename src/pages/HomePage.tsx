@@ -2,7 +2,7 @@ import React from 'react'
 import LinkedInWidget from '../components/LinkedInWidget'
 import { linkedInProfile } from '../data/profile'
 import type { SkillIconKind } from '../components/SkillIcon'
-import { projects } from '../data/projects'
+import { projects, workProjects } from '../data/projects'
 import { HeroScene, skillLabelByKind } from '../components/CubeHeroScene'
 
 export const HomePage = (): JSX.Element => {
@@ -56,9 +56,22 @@ export const HomePage = (): JSX.Element => {
         </section>
 
         <section className="section" id="projects">
-          <h2>Projects</h2>
+          <h2>Personal Projects</h2>
           <div className="projects">
             {projects.map((p) => (
+              <a key={p.name} className="projectCard" href={`#/projects/${p.slug}`}>
+                <div className="projectName">{p.name}</div>
+                <div className="projectDesc">{p.description}</div>
+                {p.tags?.length ? <div className="projectTags">{p.tags.join(' • ')}</div> : null}
+              </a>
+            ))}
+          </div>
+        </section>
+
+        <section className="section" id="work-projects">
+          <h2>Work Projects</h2>
+          <div className="projects">
+            {workProjects.map((p) => (
               <a key={p.name} className="projectCard" href={`#/projects/${p.slug}`}>
                 <div className="projectName">{p.name}</div>
                 <div className="projectDesc">{p.description}</div>

@@ -609,6 +609,103 @@
           "files": [
             "src/data/agent-prompts.json"
           ]
+        },
+        {
+          "id": "p084",
+          "at": "2026-01-05T23:38:54.284Z",
+          "prompt": "Add new project (3) details for https://github.com/paulb896/llm-typescript-codebase-embeddings",
+          "verbatim": true,
+          "summary": "Added llm-typescript-codebase-embeddings as project #3 with live URL, screenshot, techUsed, and curated highlights via the repo scan/update scripts.",
+          "files": [
+            "src/data/projects.ts",
+            "public/project-screenshots/llm-typescript-codebase-embeddings.jpeg"
+          ]
+        },
+        {
+          "id": "p085",
+          "at": "2026-01-05T23:44:58.946Z",
+          "prompt": "All of the projects so far have been personal projects, but I would also like to add a section for work projects, example https://store.ea.com/skate is a webstore for the Skate video game that was built as a project in Electronic Arts.\nLoad the page to help document it\nThe backend components used for this project are: Next.js, Typescript, Mercurius GraphQL, Kubernetes\nOnce this is done we can create a new skill to document a work project based on public info\n",
+          "verbatim": true,
+          "summary": "Added a Work Projects section, documented the EA Skate webstore project from public info, and updated routing/lookup to support work project detail pages.",
+          "files": [
+            "src/data/projects.ts",
+            "src/pages/HomePage.tsx",
+            "src/pages/ProjectPage.tsx"
+          ]
+        },
+        {
+          "id": "p086",
+          "at": "2026-01-05T23:50:01.956Z",
+          "prompt": "Load any public websites as part of the doc process and take a screenshot of the website (let me know if you need access to mcp tools for this)\n",
+          "verbatim": true,
+          "summary": "Added a Playwright-based script to capture screenshots from public URLs as part of the project documentation process and used it to capture the EA Skate webstore screenshot.",
+          "files": [
+            "package.json",
+            "package-lock.json",
+            ".github/skills/project-documentation/capture-website-screenshot.cjs",
+            "scripts/capture-website-screenshot.cjs",
+            "src/data/projects.ts",
+            "public/project-screenshots/ea-skate-webstore.png",
+            ".github/skills/project-documentation/SKILL.md"
+          ]
+        },
+        {
+          "id": "p087",
+          "at": "2026-01-05T23:54:30.686Z",
+          "prompt": "Wait 5-10 seconds before taking the screenshot to ensure everything loads, and also dismiss any modals about cookies/etc before taking the screenshot\n",
+          "verbatim": true,
+          "summary": "Updated public-website screenshot capture to wait before taking the screenshot and to dismiss common cookie/consent modals automatically (best-effort).",
+          "files": [
+            ".github/skills/project-documentation/capture-website-screenshot.cjs"
+          ]
+        },
+        {
+          "id": "p088",
+          "at": "2026-01-05T23:57:32.343Z",
+          "prompt": "Take a screenshot of the entire page as well, close the modal for \"Your privacy choices\" so that it doesn't show in the screenshot\n",
+          "verbatim": true,
+          "summary": "Enhanced public-site screenshot capture to close the 'Your Privacy Choices' modal (best-effort) and optionally produce a full-page screenshot alongside the viewport shot.",
+          "files": [
+            ".github/skills/project-documentation/capture-website-screenshot.cjs",
+            ".github/skills/project-documentation/SKILL.md",
+            "public/project-screenshots/ea-skate-webstore-full.png"
+          ]
+        },
+        {
+          "id": "p089",
+          "at": "2026-01-06T00:00:40.711Z",
+          "prompt": "Skate is just showing the bottom of the website, I want to see the entire website with the privacy modal closed (looks like <a id=\"truste-consent-button\" class=\"truste-banner-close\"><img src=\"https://consent.trustarc.com/get?name=adidas_close_white.png\" alt=\"close icon\"></a>)\n",
+          "verbatim": true,
+          "summary": "Improved public-site screenshot capture for EA Skate by explicitly closing the TrustArc banner (#truste-consent-button) and forcing scroll-to-top before taking viewport/full-page screenshots.",
+          "files": [
+            ".github/skills/project-documentation/capture-website-screenshot.cjs",
+            "public/project-screenshots/ea-skate-webstore.png",
+            "public/project-screenshots/ea-skate-webstore-full.png"
+          ]
+        },
+        {
+          "id": "p090",
+          "at": "2026-01-06T00:02:44.415Z",
+          "prompt": "Looks great, now do the same for a new work project https://store.ea.com/battlefield/en\n",
+          "verbatim": true,
+          "summary": "Documented the Battlefield webstore as a new work project using public info and captured viewport/full-page screenshots with consent modals dismissed.",
+          "files": [
+            "src/data/projects.ts",
+            "public/project-screenshots/ea-battlefield-webstore.png",
+            "public/project-screenshots/ea-battlefield-webstore-full.png"
+          ]
+        },
+        {
+          "id": "p091",
+          "at": "2026-01-06T00:05:23.227Z",
+          "prompt": "The tech used for Skate Webstore is the same for battlefield webstore so update that, and also create one more work project for http://store.ea.com/apex-legends (which uses the same tech as skate and battlefield webstores)\n",
+          "verbatim": true,
+          "summary": "Updated Battlefield work project techUsed to match Skate and added an Apex Legends webstore work project (same stack) including captured viewport/full-page screenshots.",
+          "files": [
+            "src/data/projects.ts",
+            "public/project-screenshots/ea-apex-webstore.png",
+            "public/project-screenshots/ea-apex-webstore-full.png"
+          ]
         }
       ],
       "highLevelSummary": {

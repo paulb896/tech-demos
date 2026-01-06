@@ -1,12 +1,12 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
-import { projects } from '../data/projects'
+import { allProjects } from '../data/projects'
 import type { SkillIconKind } from '../components/SkillIcon'
 import { HeroScene } from '../components/CubeHeroScene'
 
 const ProjectPage = (): JSX.Element => {
   const { slug } = useParams()
-  const project = projects.find((p) => p.slug === slug)
+  const project = allProjects.find((p) => p.slug === slug)
 
   const [selectedSkill, setSelectedSkill] = React.useState<SkillIconKind | null>(null)
   const [glassTransmission, setGlassTransmission] = React.useState<number>(0.92)
