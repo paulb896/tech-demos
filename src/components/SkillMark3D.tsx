@@ -5,19 +5,20 @@ import * as THREE from 'three'
 type SkillMark3DProps = {
   kind: SkillIconKind
   active?: boolean
+  overlay?: boolean
   color?: string
   activeColor?: string
 }
 
-const IconMaterial = ({ color, active }: { color: string; active: boolean }): JSX.Element => {
+const IconMaterial = ({ color, overlay }: { color: string; overlay: boolean }): JSX.Element => {
   return (
     <meshBasicMaterial
       color={color}
       toneMapped={false}
       side={THREE.DoubleSide}
-      transparent
+      transparent={overlay}
       opacity={1}
-      depthWrite={false}
+      depthWrite={!overlay}
     />
   )
 }
@@ -25,6 +26,7 @@ const IconMaterial = ({ color, active }: { color: string; active: boolean }): JS
 const SkillMark3D = ({
   kind,
   active = false,
+  overlay = false,
   color = '#eef2ff',
   activeColor = '#a3e635'
 }: SkillMark3DProps): JSX.Element => {
@@ -36,14 +38,14 @@ const SkillMark3D = ({
 
   React.useEffect(() => {
     if (!rootRef.current) return
-    const order = 10
+    const order = overlay ? 20 : 0
     rootRef.current.traverse((obj) => {
       const mesh = obj as unknown as THREE.Mesh
       if (mesh && (mesh as unknown as { isMesh?: boolean }).isMesh) {
         mesh.renderOrder = order
       }
     })
-  }, [active])
+  }, [overlay])
 
   const kubernetesRingShape = React.useMemo(() => {
     const outerR = 0.27
@@ -59,7 +61,7 @@ const SkillMark3D = ({
     return shape
   }, [])
 
-  const renderMaterial = () => <IconMaterial color={materialColor} active={active} />
+  const renderMaterial = () => <IconMaterial color={materialColor} overlay={overlay} />
 
   const Pill = ({ width, height, position }: { width: number; height: number; position: [number, number, number] }) => (
     <mesh position={position}>

@@ -868,6 +868,28 @@
           "files": [
             "src/components/SkillMark3D.tsx"
           ]
+        },
+        {
+          "id": "p108",
+          "at": "2026-01-06T03:10:30.331Z",
+          "prompt": "The icons are visible through the cube even when it's set to non-transparent (0% glass), but I only want them to be shown when the cube side is visible",
+          "verbatim": true,
+          "summary": "Hide skill icon groups on back-facing cube sides (so they never show through the cube) and make the cube truly opaque at 0% glass by toggling its material transparency based on transmission.",
+          "files": [
+            "src/components/CubeHeroScene.tsx",
+            "src/components/SkillMark3D.tsx"
+          ]
+        },
+        {
+          "id": "p109",
+          "at": "2026-01-06T03:14:17.650Z",
+          "prompt": "Now that weird shadow/reflection on the selected icon is back",
+          "verbatim": true,
+          "summary": "Render only the selected icon as a high-renderOrder overlay (but only when the cube is in glass mode) to avoid refraction/shadow artifacts while keeping normal face-visibility rules.",
+          "files": [
+            "src/components/CubeHeroScene.tsx",
+            "src/components/SkillMark3D.tsx"
+          ]
         }
       ],
       "highLevelSummary": {

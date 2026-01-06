@@ -34,15 +34,17 @@ export const skillLabelByKind: Record<SkillIconKind, string> = {
 type CubeFaceSkillMarksProps = {
   selectedSkill: SkillIconKind | null
   onSelectSkill: (kind: SkillIconKind) => void
+  isGlass: boolean
 }
 
-const CubeFaceSkillMarks = ({ selectedSkill, onSelectSkill }: CubeFaceSkillMarksProps): JSX.Element => {
+const CubeFaceSkillMarks = ({ selectedSkill, onSelectSkill, isGlass }: CubeFaceSkillMarksProps): JSX.Element => {
   const faceIcons: SkillIconKind[] = ['database', 'node', 'containers', 'kubernetes', 'graphql', 'code']
   const pressAmountRef = React.useRef<number[]>(faceIcons.map(() => 0))
   const markGroupRefs = React.useRef<Array<THREE.Group | null>>(faceIcons.map(() => null))
   const faceGroupRefs = React.useRef<Array<THREE.Group | null>>(faceIcons.map(() => null))
   const labelRefs = React.useRef<Array<THREE.Mesh | null>>(faceIcons.map(() => null))
   const labelOpacityRef = React.useRef<number[]>(faceIcons.map(() => 0))
+  const facingRef = React.useRef<number[]>(faceIcons.map(() => 0))
   const [hoveredIndex, setHoveredIndex] = React.useState<number | null>(null)
 
   const baseColor = '#eef2ff'
@@ -97,6 +99,7 @@ const CubeFaceSkillMarks = ({ selectedSkill, onSelectSkill }: CubeFaceSkillMarks
       tempToCamera.copy(state.camera.position).sub(tempFaceWorldPosition).normalize()
 
       const facing = tempFaceWorldNormal.dot(tempToCamera)
+      facingRef.current[i] = facing
       if (facing > bestDot) {
         bestDot = facing
         bestIndex = i
@@ -107,6 +110,13 @@ const CubeFaceSkillMarks = ({ selectedSkill, onSelectSkill }: CubeFaceSkillMarks
 
     const activeFaceIndex = bestDot >= threshold ? bestIndex : -1
     for (let i = 0; i < faceIcons.length; i += 1) {
+      const markGroup = markGroupRefs.current[i]
+      if (markGroup) {
+        // Only show icon shapes on faces oriented toward the camera.
+        // This prevents seeing icons through the cube when the glass is opaque.
+        markGroup.visible = (facingRef.current[i] ?? 0) > 0.06
+      }
+
       const currentOpacity = labelOpacityRef.current[i] ?? 0
       const targetOpacity = i === activeFaceIndex ? 1 : 0
       const nextOpacity = THREE.MathUtils.damp(currentOpacity, targetOpacity, 10, delta)
@@ -155,6 +165,7 @@ const CubeFaceSkillMarks = ({ selectedSkill, onSelectSkill }: CubeFaceSkillMarks
             <SkillMark3D
               kind={faceIcons[index]}
               active={selectedSkill === faceIcons[index]}
+              overlay={isGlass && selectedSkill === faceIcons[index]}
               color={baseColor}
               activeColor={activeColor}
             />
@@ -186,6 +197,7 @@ type RotatingCubeProps = {
 
 const RotatingCube = ({ selectedSkill, onSelectSkill, transmission }: RotatingCubeProps): JSX.Element => {
   const meshRef = React.useRef<THREE.Mesh>(null)
+  const isGlass = transmission > 0.02
 
   useFrame((_state: RootState, delta: number) => {
     if (!meshRef.current) return
@@ -194,7 +206,7 @@ const RotatingCube = ({ selectedSkill, onSelectSkill, transmission }: RotatingCu
   })
 
   return (
-    <RoundedBox ref={meshRef} args={[1.6, 1.6, 1.6]} radius={0.14} smoothness={8} renderOrder={0}>
+    <RoundedBox ref={meshRef} args={[1.6, 1.6, 1.6]} radius={0.14} smoothness={8}>
       <meshPhysicalMaterial
         color="#4f46e5"
         roughness={0.06}
@@ -208,11 +220,11 @@ const RotatingCube = ({ selectedSkill, onSelectSkill, transmission }: RotatingCu
         envMapIntensity={1.25}
         clearcoat={1}
         clearcoatRoughness={0.08}
-        transparent
-        depthWrite={false}
+        transparent={isGlass}
+        depthWrite={!isGlass}
       />
       <Edges linewidth={1} threshold={12} color="#c7d2fe" />
-      <CubeFaceSkillMarks selectedSkill={selectedSkill} onSelectSkill={onSelectSkill} />
+      <CubeFaceSkillMarks selectedSkill={selectedSkill} onSelectSkill={onSelectSkill} isGlass={isGlass} />
     </RoundedBox>
   )
 }
