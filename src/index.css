@@ -55,8 +55,9 @@ a{color:inherit}
 .skillPanelTitle{font-size:12px;color:var(--ink-subtle);margin:0}
 .skillPanelValue{margin-top:4px;font-size:14px;color:var(--ink);font-weight:650}
 
-.skillPanelBody{margin-top:10px;display:grid;gap:10px}
-.skillPanelDesc{color:var(--ink-muted);font-size:13px;line-height:1.35}
+.skillPanelBody{margin-top:10px;display:grid;gap:10px;min-height:148px}
+.skillPanelBodyHidden{opacity:0;pointer-events:none}
+.skillPanelDesc{color:var(--ink-muted);font-size:13px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;min-height:4.1em}
 
 .skillGauge{border:1px solid var(--border);border-radius:12px;background:var(--surface-muted);padding:10px}
 .skillGaugeTop{display:flex;align-items:baseline;justify-content:space-between;gap:10px}

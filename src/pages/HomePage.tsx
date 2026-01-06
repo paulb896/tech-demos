@@ -92,12 +92,13 @@ export const HomePage = (): JSX.Element => {
             <div className="skillPanelTitle">Selected skill</div>
             <div className="skillPanelValue">{selectedSkillLabel ?? 'Click a cube face icon'}</div>
 
-            {selectedSkillDetails ? (
-              <div className="skillPanelBody">
-                <SkillGauge years={selectedSkillDetails.years} maxYears={18} />
-                <div className="skillPanelDesc">{selectedSkillDetails.description}</div>
-              </div>
-            ) : null}
+            <div
+              className={selectedSkillDetails ? 'skillPanelBody' : 'skillPanelBody skillPanelBodyHidden'}
+              aria-hidden={selectedSkillDetails ? undefined : true}
+            >
+              <SkillGauge years={selectedSkillDetails?.years ?? null} maxYears={18} />
+              <div className="skillPanelDesc">{selectedSkillDetails?.description ?? ''}</div>
+            </div>
           </div>
         </div>
       </header>

@@ -1200,6 +1200,17 @@
           "files": [
             "src/components/CubeHeroScene.tsx"
           ]
+        },
+        {
+          "id": "p140",
+          "at": "2026-01-06T05:49:29.455Z",
+          "prompt": "The content is shifting quite a bit after selecting a skill, ensure that doesn't happen",
+          "verbatim": true,
+          "summary": "Prevented layout shift in the Selected skill panel by always rendering the gauge/description area with reserved min-height; hide it visually until a skill is selected and clamp description height.",
+          "files": [
+            "src/pages/HomePage.tsx",
+            "src/index.css"
+          ]
         }
       ],
       "highLevelSummary": {
