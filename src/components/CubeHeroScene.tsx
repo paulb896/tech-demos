@@ -26,6 +26,13 @@ type DragRotateGroupProps = {
   children: React.ReactNode
 }
 
+type DragRotateContextValue = {
+  activePointerIdRef: React.MutableRefObject<number | null>
+  movedSinceDownRef: React.MutableRefObject<boolean>
+}
+
+const DragRotateContext = React.createContext<DragRotateContextValue | null>(null)
+
 const DragRotateGroup = ({ children }: DragRotateGroupProps): JSX.Element => {
   const dragGroupRef = React.useRef<THREE.Group>(null)
   const draggingRef = React.useRef(false)
@@ -151,7 +158,9 @@ const DragRotateGroup = ({ children }: DragRotateGroupProps): JSX.Element => {
         <meshBasicMaterial transparent opacity={0} depthWrite={false} side={THREE.DoubleSide} />
       </mesh>
 
-      <group ref={dragGroupRef}>{children}</group>
+      <DragRotateContext.Provider value={{ activePointerIdRef, movedSinceDownRef }}>
+        <group ref={dragGroupRef}>{children}</group>
+      </DragRotateContext.Provider>
     </group>
   )
 }
@@ -194,6 +203,8 @@ const CubeFaceSkillMarks = ({ selectedSkill, onSelectSkill, isGlass }: CubeFaceS
 
   const baseColor = '#eef2ff'
   const activeColor = '#a3e635'
+
+  const dragRotateContext = React.useContext(DragRotateContext)
 
   useCursor(hoveredIndex !== null, 'pointer', 'auto')
 
@@ -340,8 +351,15 @@ const CubeFaceSkillMarks = ({ selectedSkill, onSelectSkill, isGlass }: CubeFaceS
               setHoveredIndex((current) => (current === index ? null : current))
             }}
             onPointerDown={(event) => {
-              event.stopPropagation()
               pressTargetRef.current[index] = 1
+            }}
+            onPointerUp={(event) => {
+              // Allow drag-to-rotate to start even when pressing an icon.
+              // Only treat as a selection when the pointer did not drag.
+              const pointerMatches = dragRotateContext?.activePointerIdRef.current === event.pointerId
+              const didMove = dragRotateContext?.movedSinceDownRef.current ?? false
+              if (pointerMatches && didMove) return
+
               onSelectSkill(faceIcons[index])
             }}
           >

@@ -1190,6 +1190,16 @@
           "files": [
             "src/components/CubeHeroScene.tsx"
           ]
+        },
+        {
+          "id": "p139",
+          "at": "2026-01-06T05:46:36.543Z",
+          "prompt": "Make it so clicking anywhere even the icon will still rotate",
+          "verbatim": true,
+          "summary": "Changed icon interaction so pointer-down on icons no longer blocks drag rotation; selection now occurs on pointer-up only when no drag movement happened.",
+          "files": [
+            "src/components/CubeHeroScene.tsx"
+          ]
         }
       ],
       "highLevelSummary": {
