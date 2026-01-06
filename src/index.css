@@ -51,22 +51,32 @@ a{color:inherit}
 .hero3d{height:320px;border-radius:var(--radius-lg);border:1px solid var(--border);overflow:hidden;background:var(--surface);transition:border-color 180ms ease}
 .hero3d:hover{border-color:var(--accent-border)}
 
-.skillPanel{margin-top:10px;border:1px solid var(--border);border-radius:var(--radius-md);padding:10px 12px;background:var(--surface)}
+.skillPanel{margin-top:10px;border:1px solid var(--border);border-radius:var(--radius-md);padding:10px 12px;background:linear-gradient(180deg,var(--surface) 0%,var(--surface-muted) 140%);position:relative;overflow:hidden}
+.skillPanel::before{content:"";position:absolute;inset:-1px;border-radius:inherit;background:radial-gradient(650px 220px at 20% -10%,var(--accent-bg) 0%,transparent 55%);opacity:.75;pointer-events:none}
+.skillPanelSelected{border-color:var(--accent-border)}
 .skillPanelTitle{font-size:12px;color:var(--ink-subtle);margin:0}
 .skillPanelValue{margin-top:4px;font-size:14px;color:var(--ink);font-weight:650}
 
-.skillPanelBody{margin-top:10px;display:grid;gap:10px;min-height:148px}
+.skillPanelBody{margin-top:10px;display:grid;gap:10px;min-height:164px;position:relative}
 .skillPanelBodyHidden{opacity:0;pointer-events:none}
-.skillPanelDesc{color:var(--ink-muted);font-size:13px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;min-height:4.1em}
+.skillPanelBodyGrid{display:grid;gap:10px}
+.skillPanelDescCard{border:1px solid var(--border);border-radius:12px;background:rgba(255,255,255,.7);backdrop-filter:saturate(1.05) blur(6px);padding:10px}
+.skillPanelDescTitle{font-size:12px;color:var(--ink-subtle);font-weight:650;margin:0 0 6px 0}
+.skillPanelDesc{color:var(--ink-muted);font-size:13px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;min-height:5.45em}
 
-.skillGauge{border:1px solid var(--border);border-radius:12px;background:var(--surface-muted);padding:10px}
+.skillGauge{border:1px solid var(--border);border-radius:12px;background:rgba(248,250,252,.9);backdrop-filter:saturate(1.05) blur(6px);padding:10px}
 .skillGaugeTop{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
 .skillGaugeLabel{font-size:12px;color:var(--ink-subtle);font-weight:650}
 .skillGaugeValue{font-size:12px;color:var(--ink);font-weight:750}
 .skillGaugeTrack{margin-top:8px;height:10px;border-radius:999px;border:1px solid var(--border);background:linear-gradient(90deg,var(--surface) 0%,var(--surface) 100%);position:relative;overflow:hidden}
 .skillGaugeTrack::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(15,23,42,0.10) 0px,rgba(15,23,42,0.10) 1px,transparent 1px,transparent 14px);opacity:.55;pointer-events:none}
-.skillGaugeFill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--accent-border),var(--accent-bg))}
+.skillGaugeTrack::before{content:"";position:absolute;inset:-30% -40%;background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.55) 45%,transparent 70%);transform:translateX(-35%);opacity:.35;pointer-events:none}
+.skillGaugeFill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--accent-border),var(--accent-bg));transition:width 260ms ease}
 .skillGaugeHint{margin-top:8px;font-size:12px;color:var(--ink-subtle)}
+
+@media (min-width: 520px){
+	.skillPanelBodyGrid{grid-template-columns:0.95fr 1.05fr;align-items:stretch}
+}
 
 .canvasHud{position:absolute;left:12px;bottom:12px;display:flex;align-items:center}
 .canvasHudLabel{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:12px;border:1px solid var(--border);background:rgba(255,255,255,.9);color:var(--ink);font-size:12px;backdrop-filter:saturate(1.1) blur(6px)}

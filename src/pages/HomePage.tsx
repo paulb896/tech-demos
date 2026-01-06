@@ -51,7 +51,7 @@ const SkillGauge = ({ years, maxYears }: SkillGaugeProps): JSX.Element => {
       <div className="skillGaugeTrack" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={percent}>
         <div className="skillGaugeFill" style={{ width: `${percent}%` }} />
       </div>
-      <div className="skillGaugeHint">{safeYears === null ? `Add years in skillDetailsByKind` : `~${percent}% of ${maxYears} yrs scale`}</div>
+      <div className="skillGaugeHint">{safeYears === null ? `Set years in skillDetailsByKind` : `~${percent}% of ${maxYears} yrs scale`}</div>
     </div>
   )
 }
@@ -61,6 +61,7 @@ export const HomePage = (): JSX.Element => {
 
   const selectedSkillLabel = selectedSkill ? skillLabelByKind[selectedSkill] : null
   const selectedSkillDetails = selectedSkill ? skillDetailsByKind[selectedSkill] : null
+  const hasSelectedSkill = selectedSkillDetails !== null
 
   return (
     <div className="page">
@@ -88,7 +89,7 @@ export const HomePage = (): JSX.Element => {
             />
           </div>
 
-          <div className="skillPanel" role="status" aria-live="polite">
+          <div className={hasSelectedSkill ? 'skillPanel skillPanelSelected' : 'skillPanel'} role="status" aria-live="polite">
             <div className="skillPanelTitle">Selected skill</div>
             <div className="skillPanelValue">{selectedSkillLabel ?? 'Click a cube face icon'}</div>
 
@@ -96,8 +97,13 @@ export const HomePage = (): JSX.Element => {
               className={selectedSkillDetails ? 'skillPanelBody' : 'skillPanelBody skillPanelBodyHidden'}
               aria-hidden={selectedSkillDetails ? undefined : true}
             >
-              <SkillGauge years={selectedSkillDetails?.years ?? null} maxYears={18} />
-              <div className="skillPanelDesc">{selectedSkillDetails?.description ?? ''}</div>
+              <div className="skillPanelBodyGrid">
+                <SkillGauge years={selectedSkillDetails?.years ?? null} maxYears={18} />
+                <div className="skillPanelDescCard">
+                  <div className="skillPanelDescTitle">What this covers</div>
+                  <div className="skillPanelDesc">{selectedSkillDetails?.description ?? ''}</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -1211,6 +1211,27 @@
             "src/pages/HomePage.tsx",
             "src/index.css"
           ]
+        },
+        {
+          "id": "p141",
+          "at": "2026-01-06T18:06:32.262Z",
+          "prompt": "Rotating of the cube itself isn't working well, go back to the original default behaviour to rotate the scene/camera instead and remove the floor",
+          "verbatim": true,
+          "summary": "Reverted cube interaction to camera/scene orbit controls (OrbitControls) instead of object-rotation drag, and removed the floor/contact shadow.",
+          "files": [
+            "src/components/CubeHeroScene.tsx"
+          ]
+        },
+        {
+          "id": "p142",
+          "at": "2026-01-06T18:09:20.503Z",
+          "prompt": "Make the skill section look even cooler (it's nice right now but it could be better)",
+          "verbatim": true,
+          "summary": "Polished the Selected skill panel: added selected-state styling, premium background treatment, improved gauge visuals, and a structured description card while keeping the layout height stable.",
+          "files": [
+            "src/pages/HomePage.tsx",
+            "src/index.css"
+          ]
         }
       ],
       "highLevelSummary": {

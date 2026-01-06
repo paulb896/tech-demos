@@ -3,11 +3,11 @@ import { Canvas, useFrame } from '@react-three/fiber'
 import type { RootState } from '@react-three/fiber'
 import * as THREE from 'three'
 import {
-  ContactShadows,
   Edges,
   Environment,
   Float,
   Lightformer,
+  OrbitControls,
   RoundedBox,
   Text,
   useCursor
@@ -20,149 +20,6 @@ import SkillMark3D from './SkillMark3D'
 type Face = {
   position: [number, number, number]
   rotation: [number, number, number]
-}
-
-type DragRotateGroupProps = {
-  children: React.ReactNode
-}
-
-type DragRotateContextValue = {
-  activePointerIdRef: React.MutableRefObject<number | null>
-  movedSinceDownRef: React.MutableRefObject<boolean>
-}
-
-const DragRotateContext = React.createContext<DragRotateContextValue | null>(null)
-
-const DragRotateGroup = ({ children }: DragRotateGroupProps): JSX.Element => {
-  const dragGroupRef = React.useRef<THREE.Group>(null)
-  const draggingRef = React.useRef(false)
-  const activePointerIdRef = React.useRef<number | null>(null)
-  const lastPointerRef = React.useRef<{ x: number; y: number } | null>(null)
-  const movedSinceDownRef = React.useRef(false)
-  const lastMoveTimeRef = React.useRef<number | null>(null)
-  const angularVelocityRef = React.useRef<{ x: number; y: number }>({ x: 0, y: 0 })
-
-  React.useEffect(() => {
-    const releaseDrag = () => {
-      draggingRef.current = false
-      activePointerIdRef.current = null
-      lastPointerRef.current = null
-      movedSinceDownRef.current = false
-      lastMoveTimeRef.current = null
-    }
-
-    window.addEventListener('pointerup', releaseDrag)
-    window.addEventListener('pointercancel', releaseDrag)
-    window.addEventListener('blur', releaseDrag)
-
-    return () => {
-      window.removeEventListener('pointerup', releaseDrag)
-      window.removeEventListener('pointercancel', releaseDrag)
-      window.removeEventListener('blur', releaseDrag)
-    }
-  }, [])
-
-  useFrame((_state, delta) => {
-    const group = dragGroupRef.current
-    if (!group) return
-
-    // Apply inertia when not actively dragging.
-    if (!draggingRef.current) {
-      const velocity = angularVelocityRef.current
-      if (Math.abs(velocity.x) + Math.abs(velocity.y) < 1e-5) return
-
-      group.rotation.x += velocity.x * delta
-      group.rotation.y += velocity.y * delta
-      group.rotation.x = THREE.MathUtils.clamp(group.rotation.x, -Math.PI / 2 + 0.05, Math.PI / 2 - 0.05)
-
-      // Exponential damping: higher => quicker stop.
-      // Tuned lower so it keeps spinning for a couple seconds.
-      const damping = 3.8
-      const decay = Math.exp(-damping * delta)
-      velocity.x *= decay
-      velocity.y *= decay
-    }
-  })
-
-  return (
-    <group
-      onPointerDown={(event) => {
-        // If an icon handles the event, it stops propagation and we won't start a drag.
-        if (draggingRef.current) return
-
-        event.stopPropagation()
-        draggingRef.current = true
-        activePointerIdRef.current = event.pointerId
-        lastPointerRef.current = { x: event.clientX, y: event.clientY }
-        movedSinceDownRef.current = false
-        lastMoveTimeRef.current = performance.now()
-      }}
-      onPointerMove={(event) => {
-        if (!draggingRef.current) return
-        if (activePointerIdRef.current !== event.pointerId) return
-        if (!dragGroupRef.current) return
-
-        const last = lastPointerRef.current
-        if (!last) {
-          lastPointerRef.current = { x: event.clientX, y: event.clientY }
-          return
-        }
-
-        const dx = event.clientX - last.x
-        const dy = event.clientY - last.y
-        if (Math.abs(dx) + Math.abs(dy) > 0.5) movedSinceDownRef.current = true
-
-        const rotateSpeed = 0.008
-        const rotateX = dy * rotateSpeed
-        const rotateY = dx * rotateSpeed
-
-        dragGroupRef.current.rotation.y += rotateY
-        dragGroupRef.current.rotation.x += rotateX
-        dragGroupRef.current.rotation.x = THREE.MathUtils.clamp(
-          dragGroupRef.current.rotation.x,
-          -Math.PI / 2 + 0.05,
-          Math.PI / 2 - 0.05
-        )
-
-        // Estimate angular velocity for inertia.
-        const now = performance.now()
-        const lastT = lastMoveTimeRef.current ?? now
-        const dtSeconds = Math.max(0.001, (now - lastT) / 1000)
-        const vx = rotateX / dtSeconds
-        const vy = rotateY / dtSeconds
-        const smooth = 0.35
-        angularVelocityRef.current.x = THREE.MathUtils.lerp(angularVelocityRef.current.x, vx, smooth)
-        angularVelocityRef.current.y = THREE.MathUtils.lerp(angularVelocityRef.current.y, vy, smooth)
-        lastMoveTimeRef.current = now
-
-        lastPointerRef.current = { x: event.clientX, y: event.clientY }
-      }}
-      onPointerUp={(event) => {
-        if (activePointerIdRef.current !== event.pointerId) return
-        draggingRef.current = false
-        activePointerIdRef.current = null
-        lastPointerRef.current = null
-        movedSinceDownRef.current = false
-        lastMoveTimeRef.current = null
-      }}
-      onPointerLeave={() => {
-        draggingRef.current = false
-        activePointerIdRef.current = null
-        lastPointerRef.current = null
-        movedSinceDownRef.current = false
-        lastMoveTimeRef.current = null
-      }}
-    >
-      <mesh position={[0, 0, 0]} castShadow={false} receiveShadow={false}>
-        <planeGeometry args={[50, 50]} />
-        <meshBasicMaterial transparent opacity={0} depthWrite={false} side={THREE.DoubleSide} />
-      </mesh>
-
-      <DragRotateContext.Provider value={{ activePointerIdRef, movedSinceDownRef }}>
-        <group ref={dragGroupRef}>{children}</group>
-      </DragRotateContext.Provider>
-    </group>
-  )
 }
 
 const faceOffset = 0.805
@@ -203,8 +60,6 @@ const CubeFaceSkillMarks = ({ selectedSkill, onSelectSkill, isGlass }: CubeFaceS
 
   const baseColor = '#eef2ff'
   const activeColor = '#a3e635'
-
-  const dragRotateContext = React.useContext(DragRotateContext)
 
   useCursor(hoveredIndex !== null, 'pointer', 'auto')
 
@@ -353,13 +208,8 @@ const CubeFaceSkillMarks = ({ selectedSkill, onSelectSkill, isGlass }: CubeFaceS
             onPointerDown={(event) => {
               pressTargetRef.current[index] = 1
             }}
-            onPointerUp={(event) => {
-              // Allow drag-to-rotate to start even when pressing an icon.
-              // Only treat as a selection when the pointer did not drag.
-              const pointerMatches = dragRotateContext?.activePointerIdRef.current === event.pointerId
-              const didMove = dragRotateContext?.movedSinceDownRef.current ?? false
-              if (pointerMatches && didMove) return
-
+            onClick={(event) => {
+              event.stopPropagation()
               onSelectSkill(faceIcons[index])
             }}
           >
@@ -404,8 +254,6 @@ const RotatingCube = ({ selectedSkill, onSelectSkill }: RotatingCubeProps): JSX.
   const transmission = 0
   const isGlass = false
 
-  // Rotation is controlled by user drag (PresentationControls).
-
   return (
     <RoundedBox ref={meshRef} args={[1.6, 1.6, 1.6]} radius={0.14} smoothness={8} castShadow receiveShadow>
       <meshPhysicalMaterial
@@ -447,6 +295,7 @@ export const HeroScene = ({ selectedSkill, onSelectSkill }: HeroSceneProps): JSX
       gl={{ antialias: false, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.12 }}
     >
       <color attach="background" args={["#f8fafc"]} />
+      <OrbitControls enablePan={false} enableZoom={false} enableDamping dampingFactor={0.08} />
       <ambientLight intensity={0.22} />
       <directionalLight
         position={[3, 3, 4]}
@@ -488,13 +337,9 @@ export const HeroScene = ({ selectedSkill, onSelectSkill }: HeroSceneProps): JSX
           color="#a78bfa"
         />
       </Environment>
-      <DragRotateGroup>
-        <Float speed={1.15} rotationIntensity={0} floatIntensity={0.65}>
-          <RotatingCube selectedSkill={selectedSkill} onSelectSkill={onSelectSkill} />
-        </Float>
-      </DragRotateGroup>
-
-      <ContactShadows position={[0, -1.06, 0]} opacity={0.18} blur={3.6} scale={7} far={4} />
+      <Float speed={1.15} rotationIntensity={0.2} floatIntensity={0.65}>
+        <RotatingCube selectedSkill={selectedSkill} onSelectSkill={onSelectSkill} />
+      </Float>
 
       <EffectComposer multisampling={0} enableNormalPass>
         <SSAO
