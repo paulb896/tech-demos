@@ -133,15 +133,14 @@ const AgentPromptsPage = (): JSX.Element => {
       <header className="promptHeader">
         <div className="promptHeaderRow">
           <div>
+            <a className="button secondary pageBackButton" href="#/" aria-label="Back to Home">
+              Back to Home
+            </a>
             <h1 className="promptTitle">Generated with Agent Prompts</h1>
             <p className="promptSubtitle">
               Search and review prompts from <span className="promptMono">src/data/agent-prompts.json</span>.
             </p>
           </div>
-
-          <a className="button secondary" href="#/" aria-label="Back to home">
-            Back to Home
-          </a>
         </div>
       </header>
 

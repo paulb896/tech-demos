@@ -75,9 +75,11 @@ const CubeFaceSkillMarks = ({ selectedSkill, onSelectSkill }: CubeFaceSkillMarks
       const group = markGroupRefs.current[i]
       if (!group) continue
 
-      const depth = next * 0.065
+      // Move outward (away from the cube) to avoid intersecting the glass,
+      // which can create shadow/refraction artifacts.
+      const depth = next * 0.04
       const scale = 1 - next * 0.12
-      group.position.z = -depth
+      group.position.z = depth
       group.scale.setScalar(scale)
     }
 
@@ -192,7 +194,7 @@ const RotatingCube = ({ selectedSkill, onSelectSkill, transmission }: RotatingCu
   })
 
   return (
-    <RoundedBox ref={meshRef} args={[1.6, 1.6, 1.6]} radius={0.14} smoothness={8}>
+    <RoundedBox ref={meshRef} args={[1.6, 1.6, 1.6]} radius={0.14} smoothness={8} renderOrder={0}>
       <meshPhysicalMaterial
         color="#4f46e5"
         roughness={0.06}
@@ -206,6 +208,8 @@ const RotatingCube = ({ selectedSkill, onSelectSkill, transmission }: RotatingCu
         envMapIntensity={1.25}
         clearcoat={1}
         clearcoatRoughness={0.08}
+        transparent
+        depthWrite={false}
       />
       <Edges linewidth={1} threshold={12} color="#c7d2fe" />
       <CubeFaceSkillMarks selectedSkill={selectedSkill} onSelectSkill={onSelectSkill} />

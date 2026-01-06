@@ -11,13 +11,13 @@ type SkillMark3DProps = {
 
 const IconMaterial = ({ color, active }: { color: string; active: boolean }): JSX.Element => {
   return (
-    <meshStandardMaterial
+    <meshBasicMaterial
       color={color}
-      roughness={0.35}
-      metalness={0.05}
-      emissive={active ? color : '#000000'}
-      emissiveIntensity={active ? 0.9 : 0}
+      toneMapped={false}
       side={THREE.DoubleSide}
+      transparent
+      opacity={1}
+      depthWrite={false}
     />
   )
 }
@@ -28,10 +28,22 @@ const SkillMark3D = ({
   color = '#eef2ff',
   activeColor = '#a3e635'
 }: SkillMark3DProps): JSX.Element => {
+  const rootRef = React.useRef<THREE.Group>(null)
   const materialColor = active ? activeColor : color
   const z = 0.02
   const thickness = 0.012
   const lineThickness = 0.01
+
+  React.useEffect(() => {
+    if (!rootRef.current) return
+    const order = 10
+    rootRef.current.traverse((obj) => {
+      const mesh = obj as unknown as THREE.Mesh
+      if (mesh && (mesh as unknown as { isMesh?: boolean }).isMesh) {
+        mesh.renderOrder = order
+      }
+    })
+  }, [active])
 
   const kubernetesRingShape = React.useMemo(() => {
     const outerR = 0.27
@@ -72,7 +84,7 @@ const SkillMark3D = ({
 
   if (kind === 'database') {
     return (
-      <group>
+      <group ref={rootRef}>
         <Disc position={[0, 0.19, z]} radius={0.32} />
         <Pill width={0.64} height={0.28} position={[0, 0.02, z]} />
         <Disc position={[0, -0.15, z]} radius={0.32} />
@@ -86,7 +98,7 @@ const SkillMark3D = ({
 
   if (kind === 'node') {
     return (
-      <group position={[0, 0, z]}>
+      <group ref={rootRef} position={[0, 0, z]}>
         {/* flat-ish hex badge */}
         <mesh rotation={[Math.PI / 2, 0, 0]}>
           <cylinderGeometry args={[0.32, 0.32, thickness, 6]} />
@@ -111,7 +123,7 @@ const SkillMark3D = ({
 
   if (kind === 'containers') {
     return (
-      <group>
+      <group ref={rootRef}>
         {/* flat container outline */}
         <Pill width={0.74} height={0.07} position={[0, 0.2, z]} />
         <Pill width={0.74} height={0.07} position={[0, -0.2, z]} />
@@ -131,7 +143,7 @@ const SkillMark3D = ({
 
   if (kind === 'kubernetes') {
     return (
-      <group>
+      <group ref={rootRef}>
         {/* flat "helm wheel" (Kubernetes-ish) */}
         <mesh position={[0, 0, z - thickness / 2]}>
           <extrudeGeometry args={[kubernetesRingShape, { depth: thickness, bevelEnabled: false }]} />
@@ -165,7 +177,7 @@ const SkillMark3D = ({
 
   if (kind === 'graphql') {
     return (
-      <group>
+      <group ref={rootRef}>
         {/* flat hex outline + node graph (GraphQL-ish) */}
         {Array.from({ length: 6 }).map((_, index) => {
           const r = 0.32
@@ -209,7 +221,7 @@ const SkillMark3D = ({
 
   // code
   return (
-    <group>
+    <group ref={rootRef}>
       {/* < */}
       <mesh rotation={[0, 0, Math.PI / 4]} position={[-0.2, 0.1, z]}>
         <boxGeometry args={[0.06, 0.32, thickness]} />

@@ -38,98 +38,77 @@ const ensureDir = (dir) => {
   fs.mkdirSync(dir, { recursive: true })
 }
 
-const clickIfVisible = async (locator) => {
-  try {
-    if (await locator.first().isVisible({ timeout: 500 })) {
-      await locator.first().click({ timeout: 1500 })
-      return true
-    }
-  } catch {
-    // best-effort
-  }
-  return false
-}
-
 const deriveFullPagePath = (filePath) => {
   const parsed = path.parse(filePath)
   return path.join(parsed.dir, `${parsed.name}-full${parsed.ext || '.png'}`)
 }
 
-const closePrivacyChoicesModal = async (page) => {
-  // EA web properties often show a cookie/privacy modal titled "Your Privacy Choices".
-  // Best-effort: find a dialog containing that text and click a close button.
+const removeCommonOverlays = async (page) => {
+  // Removes common privacy/cookie overlays without clicking anything.
+  // This avoids accidental navigation (some "dismiss" actions are actually links).
   try {
-    const dialog = page.getByRole('dialog').filter({ hasText: /your privacy choices/i })
-    if (await dialog.first().isVisible({ timeout: 500 })) {
-      const closeButton = dialog
-        .first()
-        .getByRole('button', { name: /close|dismiss|x/i })
+    await page.evaluate(() => {
+      const selectors = [
+        // TrustArc
+        '#truste-consent-button',
+        '.truste-banner-close',
+        '#truste-consent-track',
+        '#truste-consent-content',
+        '#truste-consent',
+        '#truste-consent-overlay',
+        '#truste-consent-manager',
+        '#truste-consent-required',
+        '#truste-consent-required-overlay',
+        '[id^="truste-"]',
+        '[class*="truste" i]',
+        // Common cookie/consent containers
+        '[id*="cookie" i][role="dialog"]',
+        '[class*="cookie" i][role="dialog"]'
+      ]
 
-      if (await clickIfVisible(closeButton)) return true
+      const shouldRemoveDialog = (el) => {
+        try {
+          const text = (el.textContent || '').toLowerCase()
+          return text.includes('your privacy choices') || text.includes('cookie') || text.includes('consent')
+        } catch {
+          return false
+        }
+      }
 
-      // Fallback: aria-label close
-      const ariaClose = dialog.first().locator('[aria-label*="close" i]')
-      if (await clickIfVisible(ariaClose)) return true
+      const removeNode = (node) => {
+        if (!node) return
+        try {
+          node.remove()
+        } catch {
+          try {
+            node.style.display = 'none'
+            node.style.visibility = 'hidden'
+            node.style.pointerEvents = 'none'
+          } catch {
+            // ignore
+          }
+        }
+      }
 
-      // Last resort: try Escape
-      await page.keyboard.press('Escape')
-      return true
-    }
+      for (const sel of selectors) {
+        document.querySelectorAll(sel).forEach((el) => removeNode(el))
+      }
+
+      // Target privacy choice dialogs specifically.
+      document.querySelectorAll('[role="dialog"]').forEach((el) => {
+        if (shouldRemoveDialog(el)) removeNode(el)
+      })
+
+      // Some sites use full-screen backdrops.
+      document.querySelectorAll('[class*="backdrop" i], [class*="overlay" i]').forEach((el) => {
+        const style = window.getComputedStyle(el)
+        const isFixed = style.position === 'fixed'
+        const covers = el.clientWidth >= window.innerWidth * 0.9 && el.clientHeight >= window.innerHeight * 0.9
+        if (isFixed && covers) removeNode(el)
+      })
+    })
   } catch {
     // best-effort
-  }
-
-  return false
-}
-
-const dismissCommonModals = async (page) => {
-  // Best-effort cookie/consent dismissal heuristics.
-  // We keep this intentionally broad but safe: only click visible buttons.
-  const buttonNames = [
-    /accept all/i,
-    /accept/i,
-    /agree/i,
-    /i agree/i,
-    /ok/i,
-    /got it/i,
-    /continue/i,
-    /yes/i
-  ]
-
-  // Try a few passes because some sites animate consent banners in.
-  const start = Date.now()
-  while (Date.now() - start < 7000) {
-    let clicked = false
-
-    // Close explicit privacy-choice dialogs if present.
-    clicked = (await closePrivacyChoicesModal(page)) || clicked
-
-    // TrustArc banner close button (commonly used on EA sites).
-    clicked = (await clickIfVisible(page.locator('#truste-consent-button'))) || clicked
-    clicked = (await clickIfVisible(page.locator('.truste-banner-close'))) || clicked
-
-    // Prefer explicit accept buttons.
-    for (const re of buttonNames) {
-      clicked = (await clickIfVisible(page.getByRole('button', { name: re }))) || clicked
-    }
-
-    // Some banners use <a> elements styled as buttons.
-    for (const re of buttonNames) {
-      clicked = (await clickIfVisible(page.getByRole('link', { name: re }))) || clicked
-    }
-
-    // Common close/dismiss controls.
-    clicked = (await clickIfVisible(page.getByRole('button', { name: /close|dismiss|deny/i }))) || clicked
-    clicked = (await clickIfVisible(page.locator('[aria-label*="close" i]'))) || clicked
-    clicked = (await clickIfVisible(page.locator('[data-testid*="close" i]'))) || clicked
-
-    if (!clicked) {
-      await page.waitForTimeout(350)
-      continue
-    }
-
-    // Give layout a moment to settle after clicks.
-    await page.waitForTimeout(500)
   }
 }
 
@@ -162,7 +141,7 @@ const main = async () => {
     // Give client-side apps a moment to paint after initial load.
     await page.waitForTimeout(2500)
 
-    await dismissCommonModals(page)
+    await removeCommonOverlays(page)
 
     // Wait a bit longer before capture to allow images and client-side hydration to settle.
     await page.waitForTimeout(8000)
@@ -172,10 +151,26 @@ const main = async () => {
     await page.waitForTimeout(600)
 
     // One more pass in case a banner appeared late.
-    await dismissCommonModals(page)
+    await removeCommonOverlays(page)
     await page.waitForTimeout(400)
     await page.evaluate(() => window.scrollTo(0, 0))
     await page.waitForTimeout(300)
+
+    if (hasFlag('debug')) {
+      try {
+        const debug = await page.evaluate(() => ({
+          url: String(location.href),
+          title: document.title,
+          scrollHeight: document.documentElement ? document.documentElement.scrollHeight : null,
+          bodyScrollHeight: document.body ? document.body.scrollHeight : null
+        }))
+        console.log(`Capture target: ${debug.url}`)
+        console.log(`Capture title: ${debug.title}`)
+        console.log(`Capture height: ${debug.scrollHeight} (body: ${debug.bodyScrollHeight})`)
+      } catch {
+        // best-effort
+      }
+    }
 
     const wantsFullPage = hasFlag('full-page')
     const wantsBoth = hasFlag('also-full-page')

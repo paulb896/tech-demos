@@ -18,7 +18,7 @@ const ProjectPage = (): JSX.Element => {
           <section className="section">
             <h2>Project not found</h2>
             <p>
-              <a className="button" href="#/">Back to home</a>
+              <a className="button secondary" href="#/">Back to Home</a>
             </p>
           </section>
         </div>
@@ -29,7 +29,7 @@ const ProjectPage = (): JSX.Element => {
   return (
     <div className="page">
       <header className="projectHeader">
-        <a className="button secondary" href="#/">← Home</a>
+        <a className="button secondary pageBackButton" href="#/">Back to Home</a>
         <h1 className="projectTitle">{project.name}</h1>
         <p className="projectSubtitle">{project.description}</p>
         {project.tags?.length ? <div className="projectTags">{project.tags.join(' • ')}</div> : null}

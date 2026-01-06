@@ -16,13 +16,13 @@ export const HomePage = (): JSX.Element => {
       <header className="hero">
         <div className="heroText">
           <h1 className="title">Backend Software Architect</h1>
-          <p className="subtitle">Nearly 20 years of professional experience building reliable web systems.</p>
+          <p className="subtitle">18 years of professional experience building reliable web systems.</p>
           <div className="ctaRow">
-            <a className="button secondary" href="https://github.com/paulb896" target="_blank" rel="noreferrer">
+            <a className="button secondary" href="https://github.com/paulb896/tech-demos" target="_blank" rel="noreferrer">
               GitHub
             </a>
             <a className="button secondary" href="#/agent-prompts">
-              Agent Prompts
+              Agent Prompts that Built This Site
             </a>
           </div>
 
@@ -50,8 +50,8 @@ export const HomePage = (): JSX.Element => {
         <section className="section" id="about">
           <h2>About</h2>
           <p>
-            I focus on backend architecture, performance, reliability, and developer experience. I like clear
-            interfaces, pragmatic monitoring, and systems that fail gracefully.
+            Focusing on building scalable and maintainable backend systems using modern technologies and best practices that
+            solve real-world user problems.
           </p>
         </section>
 
@@ -59,10 +59,19 @@ export const HomePage = (): JSX.Element => {
           <h2>Personal Projects</h2>
           <div className="projects">
             {projects.map((p) => (
-              <a key={p.name} className="projectCard" href={`#/projects/${p.slug}`}>
-                <div className="projectName">{p.name}</div>
-                <div className="projectDesc">{p.description}</div>
-                {p.tags?.length ? <div className="projectTags">{p.tags.join(' • ')}</div> : null}
+              <a key={p.name} className="projectCard projectCardRow projectCardCompact" href={`#/projects/${p.slug}`}>
+                <div className="projectCardMedia" aria-hidden="true">
+                  {p.screenshotUrl ? (
+                    <img className="projectCardImage" src={p.screenshotUrl} alt="" loading="lazy" />
+                  ) : (
+                    <div className="projectCardPlaceholder" />
+                  )}
+                </div>
+                <div className="projectCardBody">
+                  <div className="projectName">{p.name}</div>
+                  <div className="projectDesc">{p.description}</div>
+                  {p.tags?.length ? <div className="projectTags">{p.tags.join(' • ')}</div> : null}
+                </div>
               </a>
             ))}
           </div>
@@ -73,9 +82,16 @@ export const HomePage = (): JSX.Element => {
           <div className="projects">
             {workProjects.map((p) => (
               <a key={p.name} className="projectCard" href={`#/projects/${p.slug}`}>
-                <div className="projectName">{p.name}</div>
-                <div className="projectDesc">{p.description}</div>
-                {p.tags?.length ? <div className="projectTags">{p.tags.join(' • ')}</div> : null}
+                {p.screenshotUrl ? (
+                  <div className="projectCardMedia" aria-hidden="true">
+                    <img className="projectCardImage" src={p.screenshotUrl} alt="" loading="lazy" />
+                  </div>
+                ) : null}
+                <div className="projectCardBody">
+                  <div className="projectName">{p.name}</div>
+                  <div className="projectDesc">{p.description}</div>
+                  {p.tags?.length ? <div className="projectTags">{p.tags.join(' • ')}</div> : null}
+                </div>
               </a>
             ))}
           </div>

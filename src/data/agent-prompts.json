@@ -734,6 +734,140 @@
             "src/index.css",
             "public/CNAME"
           ]
+        },
+        {
+          "id": "p095",
+          "at": "2026-01-06T01:38:54.959Z",
+          "prompt": "Let's do another design polish pass on the main page to make the project tiles look nicer (images can be used and make them just cooler looking in general)\nAlso the nav (back to home) links on the project page and ai prompts pages are inconsistent and should be similar",
+          "verbatim": true,
+          "summary": "Polished HomePage project tiles with screenshot media cards and unified Back to Home navigation styling/placement across pages.",
+          "files": [
+            "src/pages/HomePage.tsx",
+            "src/pages/ProjectPage.tsx",
+            "src/pages/AgentPromptsPage.tsx",
+            "src/index.css"
+          ]
+        },
+        {
+          "id": "p096",
+          "at": "2026-01-06T01:58:10.869Z",
+          "prompt": "Fetch new images for https://store.ea.com/battlefield/en project as they are currently not correct\n\nInstead of trying to click to dismiss the privacy modal, can you just remove that element from the dom before taking the screenshot?",
+          "verbatim": true,
+          "summary": "Updated screenshot capture to remove privacy/consent overlays from the DOM (no clicking), preventing redirects; re-captured Battlefield viewport + full-page screenshots and rebuilt.",
+          "files": [
+            ".github/skills/project-documentation/capture-website-screenshot.cjs",
+            "public/project-screenshots/ea-battlefield-webstore.png",
+            "public/project-screenshots/ea-battlefield-webstore-full.png"
+          ]
+        },
+        {
+          "id": "p097",
+          "at": "2026-01-06T02:00:12.620Z",
+          "prompt": "Make the image for personal projects much smaller on the landing page and make the results look cooler and tighter in general",
+          "verbatim": true,
+          "summary": "Reduced Home project tile image height and tightened card spacing/typography for a denser, cleaner grid; rebuilt for Pages.",
+          "files": [
+            "src/index.css"
+          ]
+        },
+        {
+          "id": "p098",
+          "at": "2026-01-06T02:02:26.771Z",
+          "prompt": "Work projects looked good before, just change the personal projects to have the left thumbnail view",
+          "verbatim": true,
+          "summary": "Updated Home page so Personal Projects render as a left-thumbnail row layout while Work Projects keep the top-image card layout; rebuilt for Pages.",
+          "files": [
+            "src/pages/HomePage.tsx",
+            "src/index.css"
+          ]
+        },
+        {
+          "id": "p099",
+          "at": "2026-01-06T02:03:59.381Z",
+          "prompt": "Looks better, but the text in the personal projects is being cut off",
+          "verbatim": true,
+          "summary": "Adjusted Personal Projects left-thumbnail card CSS to avoid truncation by letting description/tags wrap and ensuring the card body flexes correctly.",
+          "files": [
+            "src/index.css"
+          ]
+        },
+        {
+          "id": "p100",
+          "at": "2026-01-06T02:06:07.005Z",
+          "prompt": "<environment_info>\nThe user's current OS is: Linux\n</environment_info>\n<workspace_info>\nI am working in a workspace with the following folders:\n- /home/pb/code/tech-demos \nI am working in a workspace that has the following structure:\n```\n\n```\nThis is the state of the context at this point in the conversation. The view of the workspace structure may be truncated. You can use tools to collect more context if needed.\n</workspace_info>\n\n<conversation-summary>\n<analysis>\n[Chronological Review: Walk through conversation phases: initial request → exploration → implementation → debugging → current state]\n- Phase 1 (Foundation + GH Pages): Created a Vite + React portfolio site, migrated to TypeScript, added ESLint/Prettier, configured GitHub Pages output to `docs/`, and used `HashRouter` for GH Pages compatibility.\n- Phase 2 (3D hero + UI): Added a React Three Fiber glass cube hero scene with a transmission slider and reused it across pages.\n- Phase 3 (Prompt logging + viewer): Implemented append-only logging of user prompts to `src/data/agent-prompts.json` and built a searchable “Agent Prompts” viewer page/route.\n- Phase 4 (Projects data + automation): Extended project data model and pages (screenshots, links, highlights, tech used, learnings). Added repo-scanning + screenshot capture tooling (Node scripts + Playwright) under `.github/skills/project-documentation/`.\n- Phase 5 (Work projects + public-site screenshots): Added “Work Projects” section and documented EA storefront pages (Skate, Battlefield, Apex) using Playwright screenshot capture with consent handling and full-page support.\n- Phase 6 (Professional design passes): Multiple global styling passes to make the site feel modern and professional (typography, layout, transitions), plus refined project tiles and unified navigation.\n- Phase 7 (Battlefield screenshot fix): Investigated incorrect Battlefield screenshots, found click-to-dismiss consent logic could redirect to Facebook, replaced click-based dismissal with DOM removal, then re-captured screenshots.\n- Current (Landing tiles + truncation fix): Adjusted home tile layouts: kept Work Projects as top-image cards; changed Personal Projects to left-thumbnail cards. Then fixed truncation in personal project tile text.\n\n[Intent Mapping: List each explicit user request with message context]\n- “Let’s do a design pass… super professional and modern (layout, font, transitions…)”\n- “Keep going… make the page look a bit cleaner”\n- “Design polish pass… project tiles look nicer (images can be used)… nav links inconsistent”\n- “Fetch new images for https://store.ea.com/battlefield/en… not correct”\n- “Instead of trying to click to dismiss the privacy modal… remove that element from the dom before taking the screenshot”\n- “Make the image for personal projects much smaller… cooler and tighter”\n- “Work projects looked good before, just change the personal projects to have the left thumbnail view”\n- “Looks better, but the text in the personal projects is being cut off”\n\n[Technical Inventory: Catalog all technologies, patterns, and decisions mentioned]\n- Frontend: Vite + React 18 + TypeScript.\n- Routing: `react-router-dom` with `HashRouter` for GitHub Pages.\n- 3D: three.js + `@react-three/fiber` + `@react-three/drei` (glass cube hero).\n- Styling: global CSS (`src/index.css`), no Tailwind.\n- Deployment: GitHub Pages via `docs/` output, `.nojekyll`, base `./`, and custom domain support via `public/CNAME` so `docs/CNAME` survives builds.\n- Automation: Node `.cjs` scripts and a Playwright (Chromium) screenshot tool.\n- Data: `src/data/projects.ts` (personal + work projects, screenshots via `import.meta.env.BASE_URL`), `src/data/agent-prompts.json` append-only prompt log.\n\n[Code Archaeology: Document every file, function, and code change discussed]\n- `src/index.css`\n  - Introduced theme tokens (`:root` variables), improved typography, hover/focus states, transitions, reduced-motion support.\n  - Converted sections into card-like panels and used grid spacing for a cleaner layout.\n  - Upgraded project tiles:\n    - Default (Work Projects): top-image media header with `aspect-ratio: 16/9`.\n    - Personal Projects: left-thumbnail “row” layout via modifier classes (e.g., `.projectCardRow`, `.projectCardCompact`).\n  - Final recent fix: removed truncation by ensuring the row card body can flex (`flex: 1; min-width: 0`) and allowing description/tags to wrap (removed clamp/ellipsis behavior for personal cards).\n- `src/pages/HomePage.tsx`\n  - Added screenshot-based tiles.\n  - Split behavior by section:\n    - Personal projects: row layout classes applied only there.\n    - Work projects: reverted/kept “good” top-image style; hides media entirely if missing screenshot.\n- `src/pages/ProjectPage.tsx` + `src/pages/AgentPromptsPage.tsx`\n  - Unified “Back to Home” nav label and placement (button above title), using shared class `pageBackButton`.\n- `src/data/projects.ts`\n  - Work projects use EA screenshots (`ea-battlefield-webstore.png`, etc.).\n- `public/CNAME`\n  - Added to ensure `docs/CNAME` is regenerated every build (since `emptyOutDir: true` wipes `docs/`).\n- `.github/skills/project-documentation/capture-website-screenshot.cjs`\n  - Initially: click-based modal dismissal + optional full-page capture.\n  - Debugging revealed incorrect Battlefield screenshots caused by accidental navigation to Facebook during modal clicking.\n  - Updated approach: remove/hide overlays from DOM before capture (no clicks), added optional `--debug` output behind a flag (URL/title/scroll height).\n- Screenshots\n  - `public/project-screenshots/ea-battlefield-webstore.png` and `...-full.png` regenerated correctly after DOM-removal approach; the build copies them into `docs/project-screenshots/`.\n- Prompt logging\n  - Multiple append operations via the repo’s logging script to ensure every user request is recorded with summaries and file lists.\n\n[Progress Assessment: What's done vs. pending with specific status]\n- Completed:\n  - Modern, professional site styling baseline (tokens, typography, transitions, cleaner sections).\n  - Project tiles improved with images; work/personal tiles now intentionally different.\n  - Back nav consistency fixed across Project + Agent Prompts pages.\n  - Battlefield screenshots corrected by switching from click-based consent dismissal to DOM removal; fresh viewport + full-page images captured.\n  - Personal projects left-thumbnail layout implemented; truncation issue fixed (latest change).\n- Pending / housekeeping:\n  - Working tree had ongoing `docs/assets/*` churn due to rebuilds (expected for GH Pages flow) and other modified files. Next logical step is staging/committing/pushing the changes when the user is ready.\n\n[Context Validation: Verify all continuation context is captured]\n- The user’s primary goal is a polished, professional portfolio deployed via GitHub Pages with rich project documentation and screenshots.\n- Recent UI work is specifically about the landing page tiles: work projects should remain as before; personal projects should be left-thumbnail and readable.\n- The screenshot system is critical for work projects; it now safely avoids clicks that can navigate away and instead removes overlays from the DOM.\n\n[Recent Commands Analysis: Last agent commands executed, tool results (truncated if very long), immediate pre-summarization state]\n- Immediate focus right before summarization: fixing the new issue “text in the personal projects is being cut off” after switching personal tiles to left-thumbnail layout.\n- Most recent operations:\n  1) Edited global CSS to fix truncation:\n     - Added `flex: 1; min-width: 0` to the personal row card body so it can shrink correctly without clipping.\n     - Removed the description clamp and removed tag `nowrap/ellipsis` for personal compact cards so text wraps naturally.\n  2) Ran the code-quality and build steps:\n     - Lint succeeded (no output errors).\n     - Build succeeded and emitted new hashed bundles, e.g. `docs/assets/index-iys3WWlC.css` and `docs/assets/index-P6c0MLTN.js` (sizes ~11–12 kB gzipped CSS; JS ~1.3 MB).\n  3) Appended the prompt into `src/data/agent-prompts.json`:\n     - Logged the user request verbatim with a summary describing the truncation fix and referenced `src/index.css`.\n     - Output confirmed the prompt was appended with an ISO timestamp.\n- Why these operations matter:\n  - They directly address the user’s latest feedback about cut-off text while preserving the overall design intent (work tiles unchanged; personal tiles compact but readable).\n  - Rebuilding ensures GH Pages (`docs/`) reflects the fix, aligning with the deployment goal.\n\n</analysis>\n\n<summary>\n1. Conversation Overview:\n- Primary Objectives:\n  - “Create a website that I can deploy to github pages… react… modern build tools…”\n  - “Let’s try to use react-three-fiber… maybe a rotating cube”\n  - “Log all user inputs into a JSON file… build a searchable viewer page”\n  - “Make it look super professional and modern…”\n  - “Fetch new images for https://store.ea.com/battlefield/en…”\n  - “Remove that element from the dom before taking the screenshot”\n  - “Work projects looked good before… change the personal projects to have the left thumbnail view”\n- Session Context:\n  - Built and iterated on a GH Pages-friendly React/TS portfolio, added 3D hero, added prompt logging/viewer, automated project documentation and screenshots, then heavily polished design and project tiles, and fixed a screenshot/consent edge case that caused incorrect Battlefield screenshots.\n- User Intent Evolution:\n  - From scaffolding → 3D wow factor → audit/prompt log tooling → project documentation automation → professional UI polish → targeted fixes (screenshot correctness, tile layout differences, truncation).\n\n2. Technical Foundation:\n- Vite + React + TypeScript: SPA build with GH Pages deployment (`docs/` outDir, `HashRouter`).\n- three.js + @react-three/fiber: reusable glass cube hero scene.\n- Styling: single global CSS file with design tokens and component classes (no Tailwind).\n- Automation: Playwright-based website screenshot capture, plus Node scripts for project data updates.\n- GH Pages constraints: `docs/` output, `.nojekyll`, custom domain preserved by `public/CNAME`.\n\n3. Codebase Status:\n- `src/pages/HomePage.tsx`:\n  - Purpose: landing page with About + Personal Projects + Work Projects lists.\n  - Current State: Personal Projects use left-thumbnail “row” cards (`projectCardRow projectCardCompact`); Work Projects keep top-image cards and only show media if a screenshot exists.\n- `src/index.css`:\n  - Purpose: global design system and UI styling.\n  - Current State:\n    - Theme tokens + improved typography.\n    - Project cards support both variants (default top-image vs personal left-thumbnail).\n    - Latest fix: personal card text no longer gets cut off; tags/desc wrap properly.\n- `.github/skills/project-documentation/capture-website-screenshot.cjs`:\n  - Purpose: capture screenshots from public URLs for work projects.\n  - Current State: removes consent/privacy overlays from DOM instead of clicking; supports viewport + full-page; optional debug output.\n- `public/project-screenshots/ea-battlefield-webstore*.png` and `docs/project-screenshots/...`:\n  - Purpose: correct Battlefield visuals for the portfolio.\n  - Current State: regenerated successfully after DOM-removal approach (full-page now correctly tall).\n- `src/data/agent-prompts.json`:\n  - Purpose: append-only prompt history log.\n  - Current State: updated to include the latest “text cut off” prompt and summary.\n\n4. Problem Resolution:\n- Issues Encountered:\n  - Battlefield screenshots “not correct” because click-based consent dismissal could navigate away (redirect to Facebook) and collapse page height.\n  - Personal project tile text truncation after switching to left-thumbnail layout.\n- Solutions Implemented:\n  - Screenshot tool changed to remove/hide overlays in DOM instead of clicking, eliminating navigation risk; confirmed correct target URL and scroll height before capture.\n  - CSS updated so personal project cards allow wrapping and proper flex behavior, removing truncation.\n- Debugging Context:\n  - Headless Playwright diagnostics showed the capture target becoming `https://www.facebook.com/Battlefield` during the old flow; this directly motivated DOM removal.\n  - Full-page capture verified via image dimension checks once redirects stopped.\n\n5. Progress Tracking:\n- Completed Tasks:\n  - Professional design pass + cleaner layout.\n  - Project tiles with images; differentiated layouts for personal vs work as requested.\n  - Consistent “Back to Home” nav across pages.\n  - Battlefield screenshot capture fixed and refreshed.\n  - Personal tile truncation fixed.\n- Partially Complete Work:\n  - Ongoing `docs/assets` churn from rebuilds (expected in GH Pages workflow); commit/push sequencing not shown here but would be the next step.\n\n6. Active Work State:\n- Current Focus:\n  - Final polish on landing page: personal tiles left-thumbnail, work tiles unchanged, and no text cutoff.\n- Immediate Context:\n  - The agent had just fixed truncation and rebuilt to ensure GH Pages output reflects the change.\n\n7. Recent Operations:\n- Last Agent Actions (most recent):\n  - Edited global CSS to stop truncation in personal project tiles by allowing flex/wrap and removing clamping/ellipsis in the personal compact variant.\n  - Ran lint (passed) and production build (passed), generating new hashed `docs/assets/*` outputs.\n  - Appended the user’s last prompt (“text… being cut off”) to the prompt log with a summary and file reference.\n- Tool Results Summary (key outcomes):\n  - Lint: success (no reported errors).\n  - Build: success; produced new hashed bundles (CSS/JS) in `docs/assets/`.\n  - Prompt log: confirmed append with a timestamp and referenced `src/index.css`.\n- Pre-Summary State:\n  - The agent was in the process of iterating on the landing page tile CSS and keeping `docs/` up-to-date for GitHub Pages.\n\n8. Continuation Plan:\n- Pending Task 1: Verify visual result quickly\n  - Check the personal project cards on the landing page to ensure description/tags wrap as desired and no overflow occurs at narrow widths.\n- Pending Task 2: Commit/push cleanly for GH Pages\n  - Stage `src/` changes + `public/` screenshots + `docs/` output, then commit and push.\n- Next Action:\n  - If any remaining truncation appears, adjust thumbnail width and/or introduce a “2-line title clamp” while leaving description fully readable.\n\n</summary>\n</conversation-summary>\n",
+          "verbatim": true,
+          "summary": "Recorded environment info + conversation summary context."
+        },
+        {
+          "id": "p101",
+          "at": "2026-01-06T02:07:20.700Z",
+          "prompt": "The image should be a square in the personal project tile",
+          "verbatim": true,
+          "summary": "Updated Personal Projects row-card thumbnail CSS to enforce a square (1:1) image.",
+          "files": [
+            "src/index.css"
+          ]
+        },
+        {
+          "id": "p102",
+          "at": "2026-01-06T02:13:03.551Z",
+          "prompt": "There's a weird shadown or something with the selected state in the cube when the skill is selected",
+          "verbatim": true,
+          "summary": "Switched skill icon meshes to an unlit material to remove lighting/shadow artifacts when a skill is selected.",
+          "files": [
+            "src/components/SkillMark3D.tsx"
+          ]
+        },
+        {
+          "id": "p103",
+          "at": "2026-01-06T02:22:38.979Z",
+          "prompt": "That shadow thing is still showing",
+          "verbatim": true,
+          "summary": "Adjusted cube skill mark press animation to move outward (not into the glass cube) to avoid shadow/refraction artifacts.",
+          "files": [
+            "src/components/CubeHeroScene.tsx"
+          ]
+        },
+        {
+          "id": "p104",
+          "at": "2026-01-06T02:27:29.350Z",
+          "prompt": "It just shows for the icon shape when selected, the text label and cube side itself are fine",
+          "verbatim": true,
+          "summary": "Adjusted selected skill icon material to disable depth testing (and disable depth write) so the active icon renders cleanly without glass depth artifacts.",
+          "files": [
+            "src/components/SkillMark3D.tsx"
+          ]
+        },
+        {
+          "id": "p105",
+          "at": "2026-01-06T02:30:56.069Z",
+          "prompt": "Now the icons can no longer be seen at all",
+          "verbatim": true,
+          "summary": "Fixed selected icon rendering so it stays visible over the glass cube by drawing the active icon as a transparent, high-renderOrder overlay (avoids depth artifacts).",
+          "files": [
+            "src/components/SkillMark3D.tsx"
+          ]
+        },
+        {
+          "id": "p106",
+          "at": "2026-01-06T02:33:26.530Z",
+          "prompt": "I still can't see the icons",
+          "verbatim": true,
+          "summary": "Fixed cube/icon render ordering by preventing the glass cube from writing depth and ensuring icons render after the cube.",
+          "files": [
+            "src/components/CubeHeroScene.tsx",
+            "src/components/SkillMark3D.tsx"
+          ]
+        },
+        {
+          "id": "p107",
+          "at": "2026-01-06T02:34:26.185Z",
+          "prompt": "Icons are still not showing",
+          "verbatim": true,
+          "summary": "Made skill icon materials transparent (opacity 1) and increased renderOrder so they render after the transparent glass cube.",
+          "files": [
+            "src/components/SkillMark3D.tsx"
+          ]
         }
       ],
       "highLevelSummary": {
