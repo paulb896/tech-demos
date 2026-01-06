@@ -12,7 +12,7 @@ import {
   Text,
   useCursor
 } from '@react-three/drei'
-import { Bloom, EffectComposer, SSAO, Vignette } from '@react-three/postprocessing'
+import { Bloom, EffectComposer, SMAA, SSAO, Vignette } from '@react-three/postprocessing'
 import { BlendFunction } from 'postprocessing'
 import type { SkillIconKind } from './SkillIcon'
 import SkillMark3D from './SkillMark3D'
@@ -255,22 +255,22 @@ const RotatingCube = ({ selectedSkill, onSelectSkill }: RotatingCubeProps): JSX.
   const isGlass = false
 
   return (
-    <RoundedBox ref={meshRef} args={[1.6, 1.6, 1.6]} radius={0.14} smoothness={8} castShadow receiveShadow>
+    <RoundedBox ref={meshRef} args={[1.6, 1.6, 1.6]} radius={0.14} smoothness={12} castShadow receiveShadow>
       <meshPhysicalMaterial
         color="#4f46e5"
-        roughness={0.045}
-        metalness={0.26}
+        roughness={0.03}
+        metalness={0.32}
         transmission={transmission}
         thickness={0.5}
         ior={1.5}
         attenuationColor="#4f46e5"
         attenuationDistance={1.8}
         specularIntensity={1}
-        envMapIntensity={1.9}
+        envMapIntensity={2.35}
         clearcoat={1}
-        clearcoatRoughness={0.05}
+        clearcoatRoughness={0.04}
         emissive="#4f46e5"
-        emissiveIntensity={0.07}
+        emissiveIntensity={0.09}
         transparent={false}
         opacity={1}
         depthWrite
@@ -290,9 +290,9 @@ export const HeroScene = ({ selectedSkill, onSelectSkill }: HeroSceneProps): JSX
   return (
     <Canvas
       camera={{ position: [0, 0, 4], fov: 50 }}
-      dpr={[1, 2]}
+      dpr={[1, 2.5]}
       shadows
-      gl={{ antialias: false, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.12 }}
+      gl={{ antialias: true, powerPreference: 'high-performance', toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.18 }}
     >
       <color attach="background" args={["#f8fafc"]} />
       <OrbitControls enablePan={false} enableZoom={false} enableDamping dampingFactor={0.08} />
@@ -301,8 +301,8 @@ export const HeroScene = ({ selectedSkill, onSelectSkill }: HeroSceneProps): JSX
         position={[3, 3, 4]}
         intensity={1.1}
         castShadow
-        shadow-mapSize-width={1024}
-        shadow-mapSize-height={1024}
+        shadow-mapSize-width={2048}
+        shadow-mapSize-height={2048}
         shadow-camera-near={0.5}
         shadow-camera-far={10}
         shadow-camera-left={-3}
@@ -315,7 +315,7 @@ export const HeroScene = ({ selectedSkill, onSelectSkill }: HeroSceneProps): JSX
       <directionalLight position={[-6, 2, -2]} intensity={0.72} color="#a78bfa" />
       <pointLight position={[0.2, 1.2, 2.6]} intensity={0.45} color="#ffffff" />
 
-      <Environment resolution={256}>
+      <Environment resolution={1024}>
         <Lightformer
           intensity={2.6}
           rotation={[Math.PI / 2, 0, 0]}
@@ -341,11 +341,11 @@ export const HeroScene = ({ selectedSkill, onSelectSkill }: HeroSceneProps): JSX
         <RotatingCube selectedSkill={selectedSkill} onSelectSkill={onSelectSkill} />
       </Float>
 
-      <EffectComposer multisampling={0} enableNormalPass>
+      <EffectComposer multisampling={8} enableNormalPass>
         <SSAO
-          samples={16}
-          radius={0.16}
-          intensity={10}
+          samples={24}
+          radius={0.14}
+          intensity={7.5}
           luminanceInfluence={0.7}
           worldDistanceThreshold={1.3}
           worldDistanceFalloff={0.25}
@@ -354,11 +354,13 @@ export const HeroScene = ({ selectedSkill, onSelectSkill }: HeroSceneProps): JSX
         />
         <Bloom
           blendFunction={BlendFunction.SCREEN}
-          intensity={0.35}
+          intensity={0.42}
           luminanceThreshold={0.7}
           luminanceSmoothing={0.25}
+          mipmapBlur
         />
         <Vignette eskil={false} offset={0.18} darkness={0.28} />
+        <SMAA />
       </EffectComposer>
     </Canvas>
   )
