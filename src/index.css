@@ -48,7 +48,7 @@ a{color:inherit}
 .button.secondary{background:var(--surface-muted)}
 .button.secondary:hover{background:var(--surface);border-color:var(--accent-border)}
 
-.hero3d{height:320px;border-radius:var(--radius-lg);border:1px solid var(--border);overflow:hidden;background:var(--surface);transition:border-color 180ms ease}
+.hero3d{height:320px;border-radius:var(--radius-lg);border:1px solid var(--border);overflow:hidden;background:var(--surface);transition:border-color 180ms ease;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
 .hero3d:hover{border-color:var(--accent-border)}
 
 .skillPanel{margin-top:10px;border:1px solid var(--border);border-radius:var(--radius-md);padding:10px 12px;background:linear-gradient(180deg,var(--surface) 0%,var(--surface-muted) 140%);position:relative;overflow:hidden}
@@ -118,7 +118,7 @@ a{color:inherit}
 	.projectCardRow .projectCardMedia{width:128px;min-width:128px}
 }
 
-.hero3d canvas{display:block}
+.hero3d canvas{display:block;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;touch-action:none}
 
 @media (min-width: 880px){
 	.hero{grid-template-columns:1.1fr 0.9fr}

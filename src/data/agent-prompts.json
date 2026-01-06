@@ -1295,6 +1295,16 @@
             "src/components/SkillIcon.tsx",
             "src/components/SkillMark3D.tsx"
           ]
+        },
+        {
+          "id": "p149",
+          "at": "2026-01-06T18:27:47.471Z",
+          "prompt": "On mobile when clicking an icon the entire screen flashes, remove that flash",
+          "verbatim": true,
+          "summary": "Removed mobile tap-highlight flash on the 3D canvas by disabling -webkit-tap-highlight-color and selection, and setting touch-action:none on the canvas container.",
+          "files": [
+            "src/index.css"
+          ]
         }
       ],
       "highLevelSummary": {
