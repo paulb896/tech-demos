@@ -214,6 +214,12 @@ a{color:inherit}
 
 .promptSession{margin-top:12px;border-top:1px solid var(--border);padding-top:12px}
 
+@media (max-width: 979px){
+	/* Mobile: keep list in the top half-ish and details in the bottom half-ish */
+	.promptList{max-height:42vh;overflow:auto;-webkit-overflow-scrolling:touch}
+	.promptDetail{max-height:48vh;overflow:auto;-webkit-overflow-scrolling:touch}
+}
+
 @media (min-width: 980px){
 	.promptLayout{grid-template-columns:0.9fr 1.1fr;align-items:start}
 	.promptList{max-height:70vh;overflow:auto}

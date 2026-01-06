@@ -1315,6 +1315,16 @@
           "files": [
             "src/index.css"
           ]
+        },
+        {
+          "id": "p151",
+          "at": "2026-01-06T19:31:04.406Z",
+          "prompt": "On the ai prompts page on mobile the selected prompt is way at the bottom of the page, change the layout to have the scrollable prompts at the top half(ish) part of the page and have the selected prompt a the bottom(ish) half of the page",
+          "verbatim": true,
+          "summary": "Adjusted mobile Agent Prompts viewer CSS so the prompt list and prompt detail each use ~half-viewport max-heights and are independently scrollable, keeping the selected prompt visible without long scrolling.",
+          "files": [
+            "src/index.css"
+          ]
         }
       ],
       "highLevelSummary": {
