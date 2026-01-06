@@ -1305,6 +1305,16 @@
           "files": [
             "src/index.css"
           ]
+        },
+        {
+          "id": "p150",
+          "at": "2026-01-06T18:31:56.214Z",
+          "prompt": "There's still a full screen blue flash when clicking the icon (on android), please remove that",
+          "verbatim": true,
+          "summary": "Further reduced Android tap feedback/flash by disabling -webkit-tap-highlight-color globally and preventing overscroll glow/scroll chaining via overscroll-behavior and touch-action on the 3D container.",
+          "files": [
+            "src/index.css"
+          ]
         }
       ],
       "highLevelSummary": {
