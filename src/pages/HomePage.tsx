@@ -78,7 +78,7 @@ export const HomePage = (): JSX.Element => {
               Agent Prompts that Built This Site
             </Link>
             <Link className="button secondary" to="/blog">
-              Read Blog
+              Blog
             </Link>
           </div>
 
@@ -164,10 +164,10 @@ export const HomePage = (): JSX.Element => {
           </div>
         </section>
 
-        <section className="section" id="contact">
+        <div>
           <h2>Contact</h2>
-          <p>Add your email, LinkedIn, and any preferred contact links here.</p>
-        </section>
+          <LinkedInWidget {...linkedInProfile} variant="section" />
+        </div>
       </main>
     </div>
   )
