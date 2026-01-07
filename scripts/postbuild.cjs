@@ -11,3 +11,14 @@ if (!fs.existsSync(docsDir)) {
 
 const noJekyllPath = path.join(docsDir, '.nojekyll')
 fs.writeFileSync(noJekyllPath, '')
+
+// GitHub Pages doesn't support server-side rewrites for SPAs.
+// Copy index.html -> 404.html so deep links (e.g. /blog) load the app.
+const indexHtmlPath = path.join(docsDir, 'index.html')
+const notFoundHtmlPath = path.join(docsDir, '404.html')
+
+if (fs.existsSync(indexHtmlPath)) {
+  fs.copyFileSync(indexHtmlPath, notFoundHtmlPath)
+} else {
+  console.warn('postbuild: docs/index.html not found; skipping 404.html')
+}

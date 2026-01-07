@@ -1325,6 +1325,17 @@
           "files": [
             "src/index.css"
           ]
+        },
+        {
+          "id": "p152",
+          "at": "2026-01-07T05:49:15.214Z",
+          "prompt": "The github pages deployment is no longer working after I changed the routes to no longer start with /#/",
+          "verbatim": true,
+          "summary": "Fixed GitHub Pages SPA routing by switching Vite base to '/' for custom domain and generating docs/404.html from index.html for deep-link refresh support.",
+          "files": [
+            "vite.config.mjs",
+            "scripts/postbuild.cjs"
+          ]
         }
       ],
       "highLevelSummary": {
