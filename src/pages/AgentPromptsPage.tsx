@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import promptLog from '../data/agent-prompts.json'
 import type { SkillIconKind } from '../components/SkillIcon'
 import { HeroScene } from '../components/CubeHeroScene'
@@ -132,9 +133,9 @@ const AgentPromptsPage = (): JSX.Element => {
       <header className="promptHeader">
         <div className="promptHeaderRow">
           <div>
-            <a className="button secondary pageBackButton" href="#/" aria-label="Back to Home">
+            <Link className="button secondary pageBackButton" to="/" aria-label="Back to Home">
               Back to Home
-            </a>
+            </Link>
             <h1 className="promptTitle">Generated with Agent Prompts</h1>
             <p className="promptSubtitle">
               Search and review prompts from <span className="promptMono">src/data/agent-prompts.json</span>.

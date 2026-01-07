@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import LinkedInWidget from '../components/LinkedInWidget'
 import { linkedInProfile } from '../data/profile'
 import type { SkillIconKind } from '../components/SkillIcon'
@@ -73,9 +74,12 @@ export const HomePage = (): JSX.Element => {
             <a className="button secondary" href="https://github.com/paulb896/tech-demos" target="_blank" rel="noreferrer">
               GitHub
             </a>
-            <a className="button secondary" href="#/agent-prompts">
+            <Link className="button secondary" to="/agent-prompts">
               Agent Prompts that Built This Site
-            </a>
+            </Link>
+            <Link className="button secondary" to="/blog">
+              Read Blog
+            </Link>
           </div>
 
           <LinkedInWidget {...linkedInProfile} variant="hero" />
@@ -122,7 +126,7 @@ export const HomePage = (): JSX.Element => {
           <h2>Personal Projects</h2>
           <div className="projects">
             {projects.map((p) => (
-              <a key={p.name} className="projectCard projectCardRow projectCardCompact" href={`#/projects/${p.slug}`}>
+              <Link key={p.name} className="projectCard projectCardRow projectCardCompact" to={`/projects/${p.slug}`}>
                 <div className="projectCardMedia" aria-hidden="true">
                   {p.screenshotUrl ? (
                     <img className="projectCardImage" src={p.screenshotUrl} alt="" loading="lazy" />
@@ -135,7 +139,7 @@ export const HomePage = (): JSX.Element => {
                   <div className="projectDesc">{p.description}</div>
                   {p.tags?.length ? <div className="projectTags">{p.tags.join(' • ')}</div> : null}
                 </div>
-              </a>
+              </Link>
             ))}
           </div>
         </section>
@@ -144,7 +148,7 @@ export const HomePage = (): JSX.Element => {
           <h2>Work Projects</h2>
           <div className="projects">
             {workProjects.map((p) => (
-              <a key={p.name} className="projectCard" href={`#/projects/${p.slug}`}>
+              <Link key={p.name} className="projectCard" to={`/projects/${p.slug}`}>
                 {p.screenshotUrl ? (
                   <div className="projectCardMedia" aria-hidden="true">
                     <img className="projectCardImage" src={p.screenshotUrl} alt="" loading="lazy" />
@@ -155,7 +159,7 @@ export const HomePage = (): JSX.Element => {
                   <div className="projectDesc">{p.description}</div>
                   {p.tags?.length ? <div className="projectTags">{p.tags.join(' • ')}</div> : null}
                 </div>
-              </a>
+              </Link>
             ))}
           </div>
         </section>

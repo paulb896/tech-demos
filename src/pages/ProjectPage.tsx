@@ -1,5 +1,5 @@
 import React from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { allProjects } from '../data/projects'
 import type { SkillIconKind } from '../components/SkillIcon'
 import { HeroScene } from '../components/CubeHeroScene'
@@ -17,7 +17,7 @@ const ProjectPage = (): JSX.Element => {
           <section className="section">
             <h2>Project not found</h2>
             <p>
-              <a className="button secondary" href="#/">Back to Home</a>
+              <Link className="button secondary" to="/">Back to Home</Link>
             </p>
           </section>
         </div>
@@ -28,7 +28,7 @@ const ProjectPage = (): JSX.Element => {
   return (
     <div className="page">
       <header className="projectHeader">
-        <a className="button secondary pageBackButton" href="#/">Back to Home</a>
+        <Link className="button secondary pageBackButton" to="/">Back to Home</Link>
         <h1 className="projectTitle">{project.name}</h1>
         <p className="projectSubtitle">{project.description}</p>
         {project.tags?.length ? <div className="projectTags">{project.tags.join(' • ')}</div> : null}
