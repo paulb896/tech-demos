@@ -5,10 +5,12 @@ import { HomePage } from './pages/HomePage'
 import AgentPromptsPage from './pages/AgentPromptsPage'
 import BlogArticlePage from './pages/BlogArticlePage'
 import BlogIndexPage from './pages/BlogIndexPage'
+import { ScrollRestoration } from './components/ScrollRestoration'
 
 const App = (): JSX.Element => {
   return (
-    <BrowserRouter basename={import.meta.env.BASE_URL}>
+    <BrowserRouter>
+      <ScrollRestoration />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/projects/:slug" element={<ProjectPage />} />
