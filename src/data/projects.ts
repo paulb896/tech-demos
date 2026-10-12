@@ -19,7 +19,7 @@ export const projects: Project[] = [
       'Chrome extension that injects/overrides HTTP request headers and query params for XHR/Fetch requests using declarativeNetRequest dynamic rules.',
     githubUrl: 'https://github.com/paulb896/request-header-override-chrome-extension',
     liveUrl: 'https://chrome.google.com/webstore/detail/request-header-override-m/cfgjehpalgepkcfekgjgmklehchiidgi?hl=en',
-    screenshotUrl: `${import.meta.env.BASE_URL}project-screenshots/request-header-override.png`,
+    screenshotUrl: `${import.meta.env.BASE_URL}project-screenshots/request-header-override.jpg`,
     tags: ['Chrome Extension', 'React', 'DevTools', 'declarativeNetRequest'],
     techUsed: ['React', 'TypeScript', 'eslint'],
     highlights: [
@@ -116,6 +116,22 @@ export const workProjects: Project[] = [
       'Includes account-based flows (sign-in) and purchase/license terms for digital content.',
       'Designed for a global audience with localization and support links.',
       'Built on the same storefront platform and backend stack as the Skate and Battlefield webstores.'
+    ]
+  },
+  {
+    slug: 'ea-sims-4-webstore',
+    name: 'The Sims 4 Webstore (Electronic Arts)',
+    description:
+      'Public-facing web storefront for The Sims 4: browse and purchase digital packs and bundles for your account.',
+    liveUrl: 'https://www.ea.com/games/the-sims/the-sims-4/store',
+    screenshotUrl: `${import.meta.env.BASE_URL}project-screenshots/ea-sims-webstore.png`,
+    tags: ['Work', 'E-commerce', 'Gaming'],
+    techUsed: ['Next.js', 'TypeScript', 'Mercurius GraphQL', 'Kubernetes'],
+    highlights: [
+      'Supports direct web purchasing flows for digital Sims 4 content and related offers.',
+      'Provides account-aware storefront behavior to connect purchases with the correct player profile.',
+      'Includes global-ready UX patterns such as localization and region-aware policy/support links.',
+      'Built on the shared EA webstore platform used across multiple game franchises.'
     ]
   }
 ]

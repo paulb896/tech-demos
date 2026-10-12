@@ -294,7 +294,7 @@ export const HeroScene = ({ selectedSkill, onSelectSkill }: HeroSceneProps): JSX
       shadows
       gl={{ antialias: true, powerPreference: 'high-performance', toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.18 }}
     >
-      <color attach="background" args={["#f8fafc"]} />
+      <color attach="background" args={["#0f1220"]} />
       <OrbitControls enablePan={false} enableZoom={false} enableDamping dampingFactor={0.08} />
       <ambientLight intensity={0.22} />
       <directionalLight
